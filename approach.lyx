@@ -2,7 +2,59 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass scrreprt
+\textclass scrartcl
+\begin_preamble
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{url}
+
+  \usepackage{courier}
+  \lstset{
+  	basicstyle=\footnotesize\ttfamily, % Standardschrift
+  	%numbers=left,               % Ort der Zeilennummern
+  	numberstyle=\tiny,          % Stil der Zeilennummern
+  	%stepnumber=2,               % Abstand zwischen den Zeilennummern
+  	numbersep=5pt,              % Abstand der Nummern zum Text
+  	tabsize=2,                  % Groesse von Tabs
+  	extendedchars=true,         %
+  	breaklines=true,            % Zeilen werden Umgebrochen
+  	keywordstyle=\color{red},
+  	frame=b,         
+  	%        keywordstyle=[1]\textbf,    % Stil der Keywords
+  	%        keywordstyle=[2]\textbf,    %
+  	%        keywordstyle=[3]\textbf,    %
+  	%        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
+  	stringstyle=\color{white}\ttfamily, % Farbe der String
+  	showspaces=false,           % Leerzeichen anzeigen ?
+  	showtabs=false,             % Tabs anzeigen ?
+  	xleftmargin=17pt,
+  	framexleftmargin=17pt,
+  	framexrightmargin=5pt,
+  	framexbottommargin=4pt,
+  	%backgroundcolor=\color{lightgray},
+  	showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+  }
+  \lstloadlanguages{% Check Dokumentation for further languages ...
+  	%[Visual]Basic
+  	%Pascal
+  	%C
+  	%C++
+  	%XML
+  	%HTML
+  	Java
+  }
+  %\DeclareCaptionFont{blue}{\color{blue}} 
+  
+  %\captionsetup[lstlisting]{singlelinecheck=false, labelfont={blue}, textfont={blue}}
+  \usepackage{caption}
+  
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\end_preamble
 \use_default_options true
 \begin_modules
 eqs-within-sections
@@ -57,12 +109,12 @@ tabs-within-sections
 \shortcut idx
 \color #008000
 \end_index
-\secnumdepth 2
-\tocdepth 2
+\secnumdepth 3
+\tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
 \quotes_language english
-\papercolumns 2
+\papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
