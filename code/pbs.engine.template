@@ -1,0 +1,15 @@
+#PBS -l nodes={n/4}:ppn=4
+#PBS -l walltime=24:00:00
+#PBS -l pvmem=1GB
+#PBS -N ipython-engine-glock
+#PBS -m abe
+#PBS -j oe
+#PBS -o ipc.engine-$PBS_JOBID.out
+
+module load python
+module load intel
+module load mvapich2
+
+cd $PBS_O_WORKDIR
+which ipengine
+mpiexec -np {n} ipengine --profile=pbs

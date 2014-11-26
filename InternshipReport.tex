@@ -1,0 +1,91 @@
+%% LyX 2.0.6 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{url}
+
+  \usepackage{courier}
+  \lstset{
+  	basicstyle=\footnotesize\ttfamily, % Standardschrift
+  	%numbers=left,               % Ort der Zeilennummern
+  	numberstyle=\tiny,          % Stil der Zeilennummern
+  	%stepnumber=2,               % Abstand zwischen den Zeilennummern
+  	numbersep=5pt,              % Abstand der Nummern zum Text
+  	tabsize=2,                  % Groesse von Tabs
+  	extendedchars=true,         %
+  	breaklines=true,            % Zeilen werden Umgebrochen
+  	keywordstyle=\color{red},
+  	frame=b,         
+  	%        keywordstyle=[1]\textbf,    % Stil der Keywords
+  	%        keywordstyle=[2]\textbf,    %
+  	%        keywordstyle=[3]\textbf,    %
+  	%        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
+  	stringstyle=\color{white}\ttfamily, % Farbe der String
+  	showspaces=false,           % Leerzeichen anzeigen ?
+  	showtabs=false,             % Tabs anzeigen ?
+  	xleftmargin=17pt,
+  	framexleftmargin=17pt,
+  	framexrightmargin=5pt,
+  	framexbottommargin=4pt,
+  	%backgroundcolor=\color{lightgray},
+  	showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+  }
+  \lstloadlanguages{% Check Dokumentation for further languages ...
+  	%[Visual]Basic
+  	%Pascal
+  	%C
+  	%C++
+  	%XML
+  	%HTML
+  	Java
+  }
+  %\DeclareCaptionFont{blue}{\color{blue}} 
+  
+  %\captionsetup[lstlisting]{singlelinecheck=false, labelfont={blue}, textfont={blue}}
+  \usepackage{caption}
+  
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\makeatother
+
+\begin{document}
+
+\title{Internship Report}
+
+
+\author{Philipp Glock}
+
+
+\date{11/24/14}
+
+\maketitle
+\include{introduction}
+
+\include{background}\include{brain_analytics}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

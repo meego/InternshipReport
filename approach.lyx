@@ -1,0 +1,800 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass scrreprt
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+tabs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Approach
+\end_layout
+
+\begin_layout Subsection
+The Data
+\end_layout
+
+\begin_layout Standard
+The data is not given as a classic table and therefor not directly useable
+ for classification.
+ It consists of two sets of images.
+ The first one contains the original images of each cross section and a
+ corresponding mask.
+ A mask is a grayscale image with only black or white pixels.
+ A pixel is white if it belongs to the cross section and black if it does
+ not.
+ There are 
+\begin_inset Formula $762$
+\end_inset
+
+ images with a resolution of 
+\begin_inset Formula $3272\times2469$
+\end_inset
+
+, resulting in a huge amount of pixels.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[caption=libsvm format,label=lisbsvm] 
+\end_layout
+
+\begin_layout Plain Layout
+
+<class_label> <feature_id>:value ...
+ <feature_id>:value
+\end_layout
+
+\begin_layout Plain Layout
+
+<class_label> <feature_id>:value ...
+ <feature_id>:value ...
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The classification problem is a binary one since there are only two classes.
+ Before a classifier can be trained, the images have to be converted into
+ a attribute value format.
+ The libsvm format was chosen, because it is well known and many libraries
+ support it.
+ Every row represents one instance, which is in this case one pixel and
+ its features.
+ Currently the only features available are the rgb values of a pixel from
+ the original image and the class label from the mask.
+ 
+\end_layout
+
+\begin_layout Subsection
+Data Preparation
+\end_layout
+
+\begin_layout Standard
+In the first preprocessing step the libsvm data is created.
+ The easiest method saves for each pixel the rgb values and the class label.
+ This is done for every image resulting in 
+\begin_inset Formula $762$
+\end_inset
+
+ files.
+ Every file has 
+\begin_inset Formula $8.078.568$
+\end_inset
+
+ instances, so there are 
+\begin_inset Formula $6.155.868.816$
+\end_inset
+
+ pixels in total.
+ A first trivial approach took about 3 days to generate all attribute value
+ files.
+\end_layout
+
+\begin_layout Standard
+Building a model on this set would take a huge amount of time and is therefor
+ unreasonable for selecting a model.
+ Instead of using the complete data set samples have to be used.
+ As figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:mask603"
+
+\end_inset
+
+ shows there are more instances of class 
+\begin_inset Formula $0$
+\end_inset
+
+ (black pixels) than of class 
+\begin_inset Formula $1$
+\end_inset
+
+ (white pixels).
+ To weight both classes equally, the sampled set is balanced.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure} 	
+\backslash
+centering 	
+\backslash
+includegraphics[width=0.6
+\backslash
+linewidth]{graphics/mask603} 	
+\backslash
+caption{Mask of a cross section} 	
+\backslash
+label{fig:mask603} 
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first approach is a balanced random sampling method.
+ For a given percentage 
+\begin_inset Formula $p$
+\end_inset
+
+ and a data set with $N$ instances the method draws 
+\begin_inset Formula $p\cdot N$
+\end_inset
+
+ samples from a file.
+ If the sample is balanced, 
+\begin_inset Formula $p\cdot N\cdot0.5$
+\end_inset
+
+ instances of each class are drawn randomly.
+ This can easily be parallelized since the files can be sampled independently.
+ This yields a first sample with three features.
+ To improve the classifier the number of features has to be increased.
+\end_layout
+
+\begin_layout Subsubsection
+HSV color space
+\end_layout
+
+\begin_layout Standard
+An easy method to increase the number of features is to use another color
+ space in addition to the given RGB values.
+ In this case the HSV color space was chosen.
+ It represents a color by its hue, saturation and value.
+ The values for a pixel can easily be transformed from RGB to HSV with the
+ following formula:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+Max & = & max(R,G,B)\\
+Min & = & min(R,G,B)\\
+H & = & \begin{cases}
+0, & \text{if Max =Min \Leftrightarrow}R=G=B\\
+60\text{°}\cdot\left(0+\frac{G-B}{Max-Min}\right) & \text{if Max =R }\\
+60\text{°}\cdot\left(2+\frac{B-R}{Max-Min}\right) & \text{if Max =G}\\
+60\text{°}\cdot\left(4+\frac{R-G}{Max-Min}\right) & \text{if Max =B}
+\end{cases}\\
+S & = & \begin{cases}
+0 & \text{if Max =0 \Leftrightarrow R=G=B=0 }\\
+\frac{Max-Min}{Max} & else
+\end{cases}\\
+V & = & Max
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since this computation can be done independently for every pixel, the features
+ can easily be computed in parallel and be added to existing data.
+ While computing the HSV values is simple, they also add only few additional
+ information.
+ Because of this the increase of accuracy is only marginal.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[width=0.7
+\backslash
+linewidth]{graphics/predict200_svm_rbf} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{predicted image using svm with rbf kernel} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{fig:predict200_svm_rbf} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Local Standard Deviation
+\end_layout
+
+\begin_layout Subsubsection
+Image Segmentation
+\end_layout
+
+\begin_layout Subsection
+Data Modeling
+\end_layout
+
+\begin_layout Subsubsection
+Support Vector Machines
+\end_layout
+
+\begin_layout Standard
+Support vector machines (SVMs) are one of the preferred classification methods
+ lately.
+ They have a high accuracy, but their training time is quite long.
+ A model can easily be described by the found support vectors.
+\end_layout
+
+\begin_layout Standard
+SVMs can model nonlinear decision boundaries by using other kernels instead
+ of the linear kernel to increase the dimension of a vector.
+ A kernel defines the used scalar product.
+ The most popular kernels are the following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{itemize} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+item linear:  $K(x,y) = 
+\backslash
+sum_{i=0}^n x_i
+\backslash
+cdot y_i$ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+item polynomial: $K(x,y) = (c+
+\backslash
+sum_{i=0}^{n} x_i
+\backslash
+cdot y_i)^d$	 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+item rbf: $ 
+\backslash
+exp(-
+\backslash
+frac{||x-y||^2}{2
+\backslash
+sigma^2})$  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{itemize}  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{|l|r|r|r|}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+Classifier 	& Accuracy & training time in s & test time in s 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+SVC (sklearn), rbf, 20k instances 	& 0.8752580408 	& 39.545465 	& 109.808209
+ 	
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+parbox[t]{6cm}{SVC (sklearn), rbf,
+\backslash
+
+\backslash
+ gamma=0.1, C=1, 20k instances} 	& 0.9579808675 	& 45.242423 	& 66.846724 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+libSVM twister, 20k instances 	& 0.9592930497 	& 445.867 	& - 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+libSVM twister, 40k instances 	& 0.963317509 	& 934.912 	& - 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 	
+\end_layout
+
+\begin_layout Plain Layout
+
+libSVM twister, 100k instances 	& 0.9665214475 	& 3077.239 	& -
+\backslash
+
+\backslash
+ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{SVMs from scikit-learn and Twister with rgb as features } 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{svm_table} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabular}{|l|r|r|r|} 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+Classifier & Accuracy & training time in s & test time in s 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+GaussianNB & 0.9475908597 	& 0.042224 & 0.075098 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+Decision Tree & 0.9569552165 	& 0.563767 	& 0.057934 	
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline 
+\end_layout
+
+\begin_layout Plain Layout
+
+RandomForest  & 0.9637635858 	& 1.698716 	& 0.399092 
+\backslash
+
+\backslash
+  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabular}  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{different_classifiers_table} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{Different classifiers used with rgb features.} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+More information on SVMs can be found at 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Han2011"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+includegraphics[width=0.8
+\backslash
+linewidth]{graphics/sklearn_runtime} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{SVC training time with increasing sample} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+label{fig:sklearn_runtime} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Post Processing
+\end_layout
+
+\begin_layout Subsection
+Results
+\end_layout
+
+\end_body
+\end_document

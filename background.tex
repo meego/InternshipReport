@@ -1,0 +1,37 @@
+
+\section{Background}
+
+The primary programming language used during this internship is python.
+Python is a dynamic scripting language and provides many nice modules
+for scientific use cases like numpy and scipy. There are also some
+machine learning modules and the scikit-learn module \cite{sklearn}
+is one of the most used and stable ones. While python alone may not
+have the best performance, it is easy to improve it by using c or
+fortran code. This is done by most libraries. The serial support vector
+machine algorithms of scikit-learn are based on the well known libsvm
+library for example. This makes python and the scikit-learn module
+a good choice for classification tasks. 
+
+The tasks are executed on a super computer at the Juelich Supercomputing
+Centre. It uses a PBS based batch system to handle the different jobs
+of users and distribute the available nodes. A popular method for
+distributed memory multiprocessing is MPI. It is, however, not being
+used here.
+
+IPython is an interactive python shell with many improvements. One
+of them is interactive parallel computing. This allows parallelizing
+python code in an interactive python session and has a robust error
+handling. 
+
+\lstinputlisting[language=bash,caption=pbs.controller.template,label=pbs_template]{./code/pbs.engine.template}
+
+After setting up a profile and creating PBS templates (e.g. listing
+\ref{pbs_template}), you can start a cluster easily using:
+
+\[
+ipcluster~start~--profile=pbs~-n~8
+\]
+ 
+
+More information on ipython in general and the setup for parallel
+usage can be found at \cite{ipython_doc}.
