@@ -81,6 +81,7 @@ tabs-within-sections
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement H
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -260,17 +261,42 @@ status open
 
 
 \backslash
-begin{figure} 	
+begin{figure}	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 centering 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 includegraphics[width=0.6
 \backslash
 linewidth]{graphics/mask603} 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 caption{Mask of a cross section} 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 label{fig:mask603} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 end{figure}
 \end_layout
@@ -399,11 +425,158 @@ end{figure}
 \end_layout
 
 \begin_layout Subsubsection
-Local Standard Deviation
+Local Features
+\end_layout
+
+\begin_layout Standard
+Despite adding the HSV color space, there is still no information on the
+ neighbourhood of a pixel.
+ A first level approach to get information on the neighbourhood of a pixel
+ are statistical values like mean or standard deviation.
+ The statistical values are calculated on an 
+\begin_inset Formula $N\times N$
+\end_inset
+
+ array around a pixel and assigned to the centered pixel.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "calc_std"
+
+\end_inset
+
+ shows how the standard deviation is calculated for an image.
+ This is done with the numpy and scipy modules.
+ The 
+\emph on
+generic_filter
+\emph default
+ function generates a window with the given size for every pixel and calls
+ the given function (e.g.
+ numpy.std).
+ The standard deviation is an indication for the homogenity of the pixel's
+ neighbourhood.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def calc_std(img,size,use_mean=False):     
+\end_layout
+
+\begin_layout Plain Layout
+
+	"""Calculate the local standard deviation for each pixel of an image.
+\end_layout
+
+\begin_layout Plain Layout
+
+    Arguments:
+\end_layout
+
+\begin_layout Plain Layout
+
+        img : rgb image
+\end_layout
+
+\begin_layout Plain Layout
+
+        size : size of the window of neighbouring pixels
+\end_layout
+
+\begin_layout Plain Layout
+
+        use_mean : boolean, if False the standard deviation of R,G and B
+ value are calculated and return as a 3 dimensional array.
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if True the standard deviation of the mean is returned.
+\end_layout
+
+\begin_layout Plain Layout
+
+    Return:
+\end_layout
+
+\begin_layout Plain Layout
+
+      array_like, 3d or 2d
+\end_layout
+
+\begin_layout Plain Layout
+
+    """
+\end_layout
+
+\begin_layout Plain Layout
+
+    if not use_mean:
+\end_layout
+
+\begin_layout Plain Layout
+
+        std = np.zeros(img.shape)
+\end_layout
+
+\begin_layout Plain Layout
+
+        for i in range(img.shape[2]):
+\end_layout
+
+\begin_layout Plain Layout
+
+            std[:,:,i] = filters.generic_filter(img[:,:,i],np.std,size)
+\end_layout
+
+\begin_layout Plain Layout
+
+    else:
+\end_layout
+
+\begin_layout Plain Layout
+
+        mean_img = np.mean(img,axis=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        std = filters.generic_filter(mean_img,np.std,size)
+\end_layout
+
+\begin_layout Plain Layout
+
+    return std
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By using the local standard deviation as a feature some information of the
+ neighbourhood is used, but this can be improved with other features.
 \end_layout
 
 \begin_layout Subsubsection
 Image Segmentation
+\end_layout
+
+\begin_layout Standard
+A more complex feature can be achieved by performing watershed segmentation.
+ It is used on grayscale images and the pixel values are treated as a elevation.
+ The algorithm floods basins from markers, which were set by the user.
+ When two basins from different markers meet a watershed is drawn.
+ The markers can be set in an easy way by using thresholds.
+ While there are more complex ways using image processing methods, the threshold
+ approach is used to keep the feature generation simple.
 \end_layout
 
 \begin_layout Subsection
@@ -840,12 +1013,64 @@ end{figure}
 
 \end_layout
 
+\begin_layout Subsubsection
+Other Classifiers
+\end_layout
+
+\begin_layout Standard
+There are some other classifiers besides support vector machines.
+ While the focus is on SVMs and they were optimized the most, some models
+ with other classifiers were tested too.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Todo short description of other classifiers
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Data Post Processing
 \end_layout
 
+\begin_layout Standard
+After the model is created an image can be predicted.
+ During the preprocessing the image is flattened and several features are
+ added, so that every row contains one pixel.
+ Since the order of the pixel is contained, the predicted labels can be
+ reshaped to form a mask for the given image.
+ This gives a much better impression of the performance of the model than
+ the accuracy score because the data is not balanced.
+ If the mask of the image is given, the predicted mask and the original
+ mask can easily be compared by opening both masks or calling the 
+\emph on
+compare_to_mask
+\emph default
+ function.
+ The second method shows which pixels were classified correctly or not.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO implement function and include an image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Results
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body
