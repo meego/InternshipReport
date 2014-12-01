@@ -881,7 +881,23 @@ GaussianNB & 0.9475908597 	& 0.042224 & 0.075098
 
 
 \backslash
-hline 
+hline
+\end_layout
+
+\begin_layout Plain Layout
+
+KNN & 0.9677196684 & 1.57 & 5.29
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hline
 \end_layout
 
 \begin_layout Plain Layout
@@ -927,14 +943,14 @@ end{tabular}
 
 
 \backslash
-label{different_classifiers_table} 
+caption{Different classifiers used with rgb features.} 
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-caption{Different classifiers used with rgb features.} 
+label{different_classifiers_table} 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1022,7 +1038,7 @@ There are some other classifiers besides support vector machines.
  While the focus is on SVMs and they were optimized the most, some models
  with other classifiers were tested too.
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Todo short description of other classifiers
@@ -1030,7 +1046,35 @@ Todo short description of other classifiers
 
 \end_inset
 
+Naive Bayes is one of them.
+ Due to its simplicity it is quite fast.
+ Unfortunatly the accuracy score is not good since Naive Bayes assumes independe
+ncy of features which is obiously not the cause for RGB values of an image.
+ 
+\end_layout
 
+\begin_layout Standard
+While KNearestNeighbour considers feature dependencies and therefore has
+ a higher accuracy, it's training time is also higher than the one of naive
+ bayes.
+ Apart from that figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "different_classifiers_table"
+
+\end_inset
+
+ shows that the prediction takes much longer since the distances to all
+ instances have to be calculated.
+\end_layout
+
+\begin_layout Standard
+Decision trees have a better accuracy than naive bayes as well but not as
+ good as KNN.
+ While their training time is larger than the one of naive bayes, it is
+ way faster than KNN.
+ For the random forest classifier, which uses ten randomized decision trees,
+ the accuracy as well as the training and testing time increase.
 \end_layout
 
 \begin_layout Subsection
