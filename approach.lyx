@@ -966,14 +966,42 @@ end{figure}
 \end_layout
 
 \begin_layout Standard
-More information on SVMs can be found at 
+More information on SVMs in general can be found at 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Han2011"
 
 \end_inset
 
+.
+\end_layout
 
+\begin_layout Standard
+Because support vector machines maximize the margin between the decision
+ boundary and the support vectors, they do not overfit as easily as other
+ classifiers like decision trees for example.
+ However, solving the quadratic problem can have a complexity between 
+\begin_inset Formula $O(n^{2})$
+\end_inset
+
+ and 
+\begin_inset Formula $O(n^{3})$
+\end_inset
+
+ depending on the used algorithm and implementation.
+ As figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "svm_table"
+
+\end_inset
+
+ shows training an svm takes much more time to be trained than other classifiers.
+ This is especially true if a non linear kernel is used, e.g.
+ rbf kernel.
+ A linear svm is much faster but this goes along with a drop in accuracy.
+ To get both a feasible training time and a good accuracy, a kernel approximatio
+n can be used together with a linear SVM.
 \end_layout
 
 \begin_layout Standard
@@ -1037,16 +1065,7 @@ Other Classifiers
 There are some other classifiers besides support vector machines.
  While the focus is on SVMs and they were optimized the most, some models
  with other classifiers were tested too.
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Todo short description of other classifiers
-\end_layout
-
-\end_inset
-
-Naive Bayes is one of them.
+ Naive Bayes is one of them.
  Due to its simplicity it is quite fast.
  Unfortunatly the accuracy score is not good since Naive Bayes assumes independe
 ncy of features which is obiously not the cause for RGB values of an image.
@@ -1075,6 +1094,7 @@ Decision trees have a better accuracy than naive bayes as well but not as
  way faster than KNN.
  For the random forest classifier, which uses ten randomized decision trees,
  the accuracy as well as the training and testing time increase.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1095,7 +1115,8 @@ After the model is created an image can be predicted.
 compare_to_mask
 \emph default
  function.
- The second method shows which pixels were classified correctly or not.
+ The latter calculates the accuracy, f-score and the confusion matrix.
+ Furthermore it also visualizes the confusion matrix as an image.
  
 \begin_inset Note Note
 status open
@@ -1110,7 +1131,7 @@ TODO implement function and include an image
 \end_layout
 
 \begin_layout Subsection
-Results
+Conclusion
 \end_layout
 
 \begin_layout Standard
