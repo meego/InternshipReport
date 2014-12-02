@@ -1001,7 +1001,10 @@ reference "svm_table"
  rbf kernel.
  A linear svm is much faster but this goes along with a drop in accuracy.
  To get both a feasible training time and a good accuracy, a kernel approximatio
-n can be used together with a linear SVM.
+n is used together with a linear SVM.
+ A kernel approximation is used before training a SVM.
+ It adds additional features to the data.
+ The features added 
 \end_layout
 
 \begin_layout Standard
