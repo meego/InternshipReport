@@ -22,25 +22,15 @@ Concepts and Techniques},
   Timestamp                = {2014.12.03}
 }
 
-@InProceedings{Williams01usingthe,
-  Title                    = {Using the Nystr\"{o}m Method to Speed Up Kernel Machines},
-  Author                   = {Christopher Williams and Matthias Seeger},
-  Booktitle                = {Advances in Neural Information Processing Systems 13},
-  Year                     = {2001},
-  Pages                    = {682--688},
-  Publisher                = {MIT Press}
-}
+@Standard{Williams,
+  Title                    = {Using the Nyström Method to Speed Up Kernel Machines},
+  Institution              = {Institute for Adaptive and Neural Computation},
+  Organization             = {University of Edinburgh},
+  Author                   = {Williams, C. and Sieger, M.},
+  HowPublished             = {\ur{http://citeseer.ist.psu.edu/viewdoc/download;jsessionid=9694239B4EF4405C96BF0FEE1F23FD9C?doi=10.1.1.18.7519\&rep=rep1\&type=pdf}},
 
-@InCollection{NIPS2012_4588,
-  Title                    = {Nystr\"{o}m Method vs Random Fourier Features: A Theoretical and Empirical Comparison},
-  Author                   = {Yang, Tianbao and Li, Yu-feng and Mahdavi, Mehrdad and Jin, Rong and Zhou, Zhi-Hua},
-  Booktitle                = {Advances in Neural Information Processing Systems 25},
-  Publisher                = {Curran Associates, Inc.},
-  Year                     = {2012},
-  Editor                   = {F. Pereira and C.J.C. Burges and L. Bottou and K.Q. Weinberger},
-  Pages                    = {476--484},
-
-  Url                      = {http://papers.nips.cc/paper/4588-nystrom-method-vs-random-fourier-features-a-theoretical-and-empirical-comparison.pdf}
+  Owner                    = {p.glock},
+  Timestamp                = {2014.12.04}
 }
 
 @Misc{ipython_doc,
@@ -59,3 +49,13 @@ Concepts and Techniques},
   Timestamp                = {2014.10.06}
 }
 
+@incollection{NIPS2012_4588,
+title = {Nystr\"{o}m Method vs Random Fourier Features: A Theoretical and Empirical Comparison},
+author = {Yang, Tianbao and Li, Yu-feng and Mahdavi, Mehrdad and Jin, Rong and Zhou, Zhi-Hua},
+booktitle = {Advances in Neural Information Processing Systems 25},
+editor = {F. Pereira and C.J.C. Burges and L. Bottou and K.Q. Weinberger},
+pages = {476--484},
+year = {2012},
+publisher = {Curran Associates, Inc.},
+url = {http://papers.nips.cc/paper/4588-nystrom-method-vs-random-fourier-features-a-theoretical-and-empirical-comparison.pdf}
+}

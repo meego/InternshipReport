@@ -277,7 +277,7 @@ centering
 \backslash
 includegraphics[width=0.6
 \backslash
-linewidth]{graphics/mask603} 	
+linewidth]{graphics/mask200} 	
 \end_layout
 
 \begin_layout Plain Layout
@@ -312,7 +312,11 @@ The first approach is a balanced random sampling method.
 \begin_inset Formula $p$
 \end_inset
 
- and a data set with $N$ instances the method draws 
+ and a data set with 
+\begin_inset Formula $N$
+\end_inset
+
+ instances the method draws 
 \begin_inset Formula $p\cdot N$
 \end_inset
 
@@ -1002,9 +1006,75 @@ reference "svm_table"
  A linear svm is much faster but this goes along with a drop in accuracy.
  To get both a feasible training time and a good accuracy, a kernel approximatio
 n is used together with a linear SVM.
- A kernel approximation is used before training a SVM.
- It adds additional features to the data.
- The features added 
+ A kernel approximation is used before training a SVM (see listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "kernel approximation"
+
+\end_inset
+
+).
+ It adds additional random features to the data.
+ For the rbf kernel this is done by a Monte Carlo approximation of its Fourier
+ transform.
+ More information on random fourier features and random binning features
+ can be found at 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Rahimi"
+
+\end_inset
+
+.
+\begin_inset listings
+lstparams "caption={kernel approximation using scikti learn},label={kernel approximation},language=Python"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from sklearn.kernel_approximation import RBFSampler
+\end_layout
+
+\begin_layout Plain Layout
+
+rbf = RBFSampler(gamma=2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_features = rbf.fit_transform(X_train) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_test_features = rbf.transform(X_test)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A second approach is the Nystroem method 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Williams01usingthe"
+
+\end_inset
+
+ which can approximate every kernel and not only the rbf one.
+ It uses a subsample of the data set to approximate a kernel.
+ As 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "NIPS2012_4588"
+
+\end_inset
+
+ shows the nyström method can achieve a better generalization in some cases.
+ For the brain analytics use case however this could not be noted.
 \end_layout
 
 \begin_layout Standard
@@ -1100,6 +1170,51 @@ Decision trees have a better accuracy than naive bayes as well but not as
  
 \end_layout
 
+\begin_layout Subsubsection
+Grid Search
+\end_layout
+
+\begin_layout Standard
+While scikit-learn already implements a function that performs grid search
+ on a given set of parameters and a classifier, this function can not be
+ used if kernel approximation is used as well.
+ The parameters that have to be optimized are the penalty parameter 
+\begin_inset Formula $C$
+\end_inset
+
+ and kernel coefficient 
+\begin_inset Formula $\gamma$
+\end_inset
+
+.
+ If kernel approximation is used, the linear SVM does not expect an argument
+ 
+\begin_inset Formula $\gamma$
+\end_inset
+
+.
+ Instead 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is set in the RBFSampler.
+ Therefor the scikit-learn function can not be used and a modified version
+ was implemented.
+ The new version generates a new data set with the additional features and
+ the current 
+\begin_inset Formula $\gamma$
+\end_inset
+
+.
+ Thereafter a linear SVM is trained with the given 
+\begin_inset Formula $C$
+\end_inset
+
+ and cross validated.
+ All results are saved in a list and returned.
+ To speed up the grid search, it is parallized with IPython using the DirectView.
+\end_layout
+
 \begin_layout Subsection
 Data Post Processing
 \end_layout
@@ -1135,10 +1250,6 @@ TODO implement function and include an image
 
 \begin_layout Subsection
 Conclusion
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \end_body
