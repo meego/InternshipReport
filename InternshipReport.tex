@@ -1,9 +1,11 @@
 %% LyX 2.0.6 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english]{scrartcl}
+\documentclass[twoside,english,british]{scrartcl}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
+\usepackage{listings}
 \usepackage{babel}
+\usepackage{textcomp}
 \usepackage{amsmath}
 \usepackage[unicode=true,pdfusetitle,
  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
@@ -77,15 +79,13 @@
 
 \author{Philipp Glock}
 
-
-\date{11/24/14}
-
 \maketitle
 \include{introduction}
 
-\include{background}\include{brain_analytics}
+\include{background}\include{brain_analytics}\include{approach}
 
 \bibliographystyle{plain}
+\phantomsection\addcontentsline{toc}{section}{\refname}\nocite{*}
 \bibliography{refs}
 
 \end{document}

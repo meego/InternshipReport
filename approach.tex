@@ -1,3 +1,4 @@
+\selectlanguage{english}%
 
 \section{Approach}
 
@@ -44,13 +45,13 @@ set is balanced.
 
 \begin{figure}	
 \centering 	
-\includegraphics[width=0.6\linewidth]{graphics/mask603} 	
+\includegraphics[width=0.6\linewidth]{graphics/mask200} 	
 \caption{Mask of a cross section} 	
 \label{fig:mask603} 
 \end{figure}
 
 The first approach is a balanced random sampling method. For a given
-percentage $p$ and a data set with \$N\$ instances the method draws
+percentage $p$ and a data set with $N$ instances the method draws
 $p\cdot N$ samples from a file. If the sample is balanced, $p\cdot N\cdot0.5$
 instances of each class are drawn randomly. This can easily be parallelized
 since the files can be sampled independently. This yields a first
@@ -103,16 +104,14 @@ Despite adding the HSV color space, there is still no information
 on the neighbourhood of a pixel. A first level approach to get information
 on the neighbourhood of a pixel are statistical values like mean or
 standard deviation. The statistical values are calculated on an $N\times N$
-array around a pixel and assigned to the centered pixel. Figure \ref{calc_std}
+array around a pixel and assigned to the centered pixel. Listing \ref{calc_std}
 shows how the standard deviation is calculated for an image. This
 is done with the numpy and scipy modules. The \emph{generic\_filter}
 function generates a window with the given size for every pixel and
-calls the given function (e.g. numpy.std). 
+calls the given function (e.g. numpy.std). The standard deviation
+is an indication for the homogenity of the pixel's neighbourhood.
 
-\begin{figure}[H]
-
-
-\begin{lstlisting}[language=Python,numbers=left]
+\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2]
 def calc_std(img,size,use_mean=False):     
 	"""Calculate the local standard deviation for each pixel of an image.
     Arguments:
@@ -132,14 +131,22 @@ def calc_std(img,size,use_mean=False):
         std = filters.generic_filter(mean_img,np.std,size)
     return std
 \end{lstlisting}
-\caption{Calculate the standard deviation using scipys generic\_filter method}
-\label{calc_std}
 
-\end{figure}
 
+By using the local standard deviation as a feature some information
+of the neighbourhood is used, but this can be improved with other
+features.
 
 
 \subsubsection{Image Segmentation}
+
+A more complex feature can be achieved by performing watershed segmentation.
+It is used on grayscale images and the pixel values are treated as
+a elevation. The algorithm floods basins from markers, which were
+set by the user. When two basins from different markers meet a watershed
+is drawn. The markers can be set in an easy way by using thresholds.
+While there are more complex ways using image processing methods,
+the threshold approach is used to keep the feature generation simple.
 
 
 \subsection{Data Modeling}
@@ -190,17 +197,50 @@ libSVM twister, 100k instances 	& 0.9665214475 	& 3077.239 	& -\\
 Classifier & Accuracy & training time in s & test time in s \\  	
 \hline 
 GaussianNB & 0.9475908597 	& 0.042224 & 0.075098 \\  	
-\hline 
+\hline
+KNN & 0.9677196684 & 1.57 & 5.29\\
+\hline
 Decision Tree & 0.9569552165 	& 0.563767 	& 0.057934 	\\  	
 \hline 
 RandomForest  & 0.9637635858 	& 1.698716 	& 0.399092 \\  	
 \hline  
 \end{tabular}  
-\label{different_classifiers_table} 
 \caption{Different classifiers used with rgb features.} 
+\label{different_classifiers_table} 
 \end{figure}
 
-More information on SVMs can be found at \cite{Han2011}
+More information on SVMs in general can be found at \cite{Han2011}.
+
+Because support vector machines maximize the margin between the decision
+boundary and the support vectors, they do not overfit as easily as
+other classifiers like decision trees for example. However, solving
+the quadratic problem can have a complexity between $O(n^{2})$ and
+$O(n^{3})$ depending on the used algorithm and implementation. As
+figure \ref{svm_table} shows training an svm takes much more time
+to be trained than other classifiers. This is especially true if a
+non linear kernel is used, e.g. rbf kernel. A linear svm is much faster
+but this goes along with a drop in accuracy. To get both a feasible
+training time and a good accuracy, a kernel approximation is used
+together with a linear SVM. A kernel approximation is used before
+training a SVM (see listing \ref{kernel approximation}). It adds
+additional random features to the data. For the rbf kernel this is
+done by a Monte Carlo approximation of its Fourier transform. More
+information on random fourier features and random binning features
+can be found at \cite{Rahimi}.
+\begin{lstlisting}[caption={kernel approximation using scikti learn},label={kernel approximation},language=Python]
+from sklearn.kernel_approximation import RBFSampler
+rbf = RBFSampler(gamma=2) 
+X_features = rbf.fit_transform(X_train) 
+X_test_features = rbf.transform(X_test)
+\end{lstlisting}
+
+
+A second approach is the Nystroem method \cite{Williams01usingthe}
+which can approximate every kernel and not only the rbf one. It uses
+a subsample of the data set to approximate a kernel. As \cite{NIPS2012_4588}
+shows the nyström method can achieve a better generalization in some
+cases. For the brain analytics use case however this could not be
+noted.
 
 \begin{figure} 
 \centering 
@@ -210,9 +250,70 @@ More information on SVMs can be found at \cite{Han2011}
 \end{figure}
 
 
+\subsubsection{Other Classifiers}
+
+There are some other classifiers besides support vector machines.
+While the focus is on SVMs and they were optimized the most, some
+models with other classifiers were tested too. Naive Bayes is one
+of them. Due to its simplicity it is quite fast. Unfortunatly the
+accuracy score is not good since Naive Bayes assumes independency
+of features which is obiously not the cause for RGB values of an image. 
+
+While KNearestNeighbour considers feature dependencies and therefore
+has a higher accuracy, it's training time is also higher than the
+one of naive bayes. Apart from that figure \ref{different_classifiers_table}
+shows that the prediction takes much longer since the distances to
+all instances have to be calculated.
+
+Decision trees have a better accuracy than naive bayes as well but
+not as good as KNN. While their training time is larger than the one
+of naive bayes, it is way faster than KNN. For the random forest classifier,
+which uses ten randomized decision trees, the accuracy as well as
+the training and testing time increase. 
+
+
+\subsubsection{Clustering}
+
+
+\subsubsection{Grid Search}
+
+While scikit-learn already implements a function that performs grid
+search on a given set of parameters and a classifier, this function
+can not be used if kernel approximation is used as well. The parameters
+that have to be optimized are the penalty parameter $C$ and kernel
+coefficient $\gamma$. If kernel approximation is used, the linear
+SVM does not expect an argument $\gamma$. Instead $\gamma$ is set
+in the RBFSampler. Therefor the scikit-learn function can not be used
+and a modified version was implemented. The new version generates
+a new data set with the additional features and the current $\gamma$.
+Thereafter a linear SVM is trained with the given $C$ and cross validated.
+All results are saved in a list and returned. To speed up the grid
+search, it is parallized with IPython using the LoadBalancedView.
+Unlike the DirectView interface this one does not allow direct access
+to the individual engines. Instead of that the IPython scheduler assigns
+the tasks to the engines minimizing the idle time of the engines.
+
+
+\subsubsection{Multiple Models}
+
+
+\subsubsection{Bagging}
+
+
 \subsection{Data Post Processing}
 
+After the model is created an image can be predicted. During the preprocessing
+the image is flattened and several features are added, so that every
+row contains one pixel. Since the order of the pixel is contained,
+the predicted labels can be reshaped to form a mask for the given
+image. This gives a much better impression of the performance of the
+model than the accuracy score because the data is not balanced. If
+the mask of the image is given, the predicted mask and the original
+mask can easily be compared by opening both masks or calling the \emph{compare\_to\_mask}
+function. The latter calculates the accuracy, f-score and the confusion
+matrix. Furthermore it also visualizes the confusion matrix as an
+image. 
 
-\subsection{Results}
 
+\subsection{Conclusion}\selectlanguage{british}%
 

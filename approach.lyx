@@ -54,6 +54,7 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\usepackage{multicol}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -1167,7 +1168,56 @@ Decision trees have a better accuracy than naive bayes as well but not as
  way faster than KNN.
  For the random forest classifier, which uses ten randomized decision trees,
  the accuracy as well as the training and testing time increase.
+\end_layout
+
+\begin_layout Subsubsection
+Multiple Models
+\end_layout
+
+\begin_layout Standard
+With only one model for all the different cross section the prediction is
+ not very good for some cross sections.
+ While it is not reasonable to use the x and y coordinates of a pixel as
+ features because the brains position changes between the images, it is
+ possible to use the z axis as a feature.
+ The z position of an image is contained in its file name, since all the
+ images are numbered.
+ Naturally, for this to work future cross sections have to be numbered in
+ the same way.
+ The alternative to using the z position as a feature with one model is
+ to divide the brain in several layers and create a model for every layer.
  
+\end_layout
+
+\begin_layout Standard
+This has several advantages in comparison to using one model.
+ 
+\end_layout
+
+\begin_layout Itemize
+simpler models 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ausformulieren?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+less training data for each model
+\end_layout
+
+\begin_layout Itemize
+more specialized models
+\end_layout
+
+\begin_layout Subsubsection
+Clustering
 \end_layout
 
 \begin_layout Subsubsection
@@ -1212,7 +1262,16 @@ While scikit-learn already implements a function that performs grid search
 
  and cross validated.
  All results are saved in a list and returned.
- To speed up the grid search, it is parallized with IPython using the DirectView.
+ To speed up the grid search, it is parallized with IPython using the LoadBalanc
+edView.
+ Unlike the DirectView interface this one does not allow direct access to
+ the individual engines.
+ Instead of that the IPython scheduler assigns the tasks to the engines
+ minimizing the idle time of the engines.
+\end_layout
+
+\begin_layout Subsubsection
+Bagging
 \end_layout
 
 \begin_layout Subsection
