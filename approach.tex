@@ -146,7 +146,7 @@ a elevation. The algorithm floods basins from markers, which were
 set by the user. When two basins from different markers meet a watershed
 is drawn. The markers can be set in an easy way by using thresholds.
 While there are more complex ways using image processing methods,
-the threshold approach is used to keep the feature generation simple.
+the threshold approach is used to keep the feature generation simple
 
 
 \subsection{Data Modeling}
@@ -269,11 +269,28 @@ Decision trees have a better accuracy than naive bayes as well but
 not as good as KNN. While their training time is larger than the one
 of naive bayes, it is way faster than KNN. For the random forest classifier,
 which uses ten randomized decision trees, the accuracy as well as
-the training and testing time increase. 
+the training and testing time increase.
 
 
-\subsubsection{Clustering}
+\subsubsection{Multiple Models}
 
+With only one model for all the different cross section the prediction
+is not very good for some cross sections. While it is not reasonable
+to use the x and y coordinates of a pixel as features because the
+brains position changes between the images, it is possible to use
+the z axis as a feature. The z position of an image is contained in
+its file name, since all the images are numbered. Naturally, for this
+to work future cross sections have to be numbered in the same way.
+The alternative to using the z position as a feature with one model
+is to divide the brain in several layers and create a model for every
+layer. 
+
+This has several advantages in comparison to using one model. 
+\begin{itemize}
+\item simpler models 
+\item less training data for each model
+\item more specialized models
+\end{itemize}
 
 \subsubsection{Grid Search}
 
@@ -292,12 +309,6 @@ search, it is parallized with IPython using the LoadBalancedView.
 Unlike the DirectView interface this one does not allow direct access
 to the individual engines. Instead of that the IPython scheduler assigns
 the tasks to the engines minimizing the idle time of the engines.
-
-
-\subsubsection{Multiple Models}
-
-
-\subsubsection{Bagging}
 
 
 \subsection{Data Post Processing}

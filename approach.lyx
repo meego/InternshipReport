@@ -581,7 +581,7 @@ A more complex feature can be achieved by performing watershed segmentation.
  When two basins from different markers meet a watershed is drawn.
  The markers can be set in an easy way by using thresholds.
  While there are more complex ways using image processing methods, the threshold
- approach is used to keep the feature generation simple.
+ approach is used to keep the feature generation simple
 \end_layout
 
 \begin_layout Subsection
@@ -1196,7 +1196,7 @@ This has several advantages in comparison to using one model.
 
 \begin_layout Itemize
 simpler models 
-\begin_inset Note Note
+\begin_inset Note Greyedout
 status open
 
 \begin_layout Plain Layout
@@ -1214,10 +1214,6 @@ less training data for each model
 
 \begin_layout Itemize
 more specialized models
-\end_layout
-
-\begin_layout Subsubsection
-Clustering
 \end_layout
 
 \begin_layout Subsubsection
@@ -1270,10 +1266,6 @@ edView.
  minimizing the idle time of the engines.
 \end_layout
 
-\begin_layout Subsubsection
-Bagging
-\end_layout
-
 \begin_layout Subsection
 Data Post Processing
 \end_layout
@@ -1305,6 +1297,10 @@ TODO implement function and include an image
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Deployement
 \end_layout
 
 \begin_layout Subsection
