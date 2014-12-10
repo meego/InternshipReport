@@ -132,19 +132,20 @@ Introduction
 
 \begin_layout Standard
 The Research Centre Jülich researches key technologies for the 21st century.
- Several different tools are needed for all kinds of experiments.
- Since these tools are often very specialized, the Research Centre has to
- develop them itself.
- Apart from this experiment driven software, there are many simulation and
- data driven problems that have to be solved.
+ Different tools are needed for all kinds of experiments.
+ Because these tools are often very specialized, the Research Centre has
+ to develop them itself.
+ Apart from this experiment related software, there are many simulation
+ and data problems that have to be solved.
  
 \end_layout
 
 \begin_layout Standard
-The Jülich Super Computing Centre JSC provides the ressources for this computati
-ons.
- This includes the hardware needed for computation.
- The JSC has several clusters that can be used for computation 
+The Jülich Super Computing Centre (JSC) provides the ressources for these
+ computations.
+ This includes the hardware needed for a fast calculation.
+ The JSC has several high performance clusters that can be used for computation
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "jsc"
@@ -152,19 +153,27 @@ key "jsc"
 \end_inset
 
 .
- Besides the hardware ressources the institute provides different software
- solutions for parallel computing.
+ Besides the hardware the institute provides different software solutions
+ for parallel computing.
  
 \end_layout
 
 \begin_layout Standard
-The division Federated Systems and Data of the Jülich Super Computing Centre
- provides access to distributed resources like HPC systems and data.
+The department 
+\begin_inset Quotes eld
+\end_inset
+
+Federated Systems and Data
+\begin_inset Quotes erd
+\end_inset
+
+ (FSD) of the Jülich Super Computing Centre provides access to distributed
+ resources like HPC systems and data.
  This is done by implementing open standards and simplifying usage and administr
 ation of these services.
- Therefor the division is one of the core development partners of the UNICORE
- Grid middleware and has members in the Research Data Alliance and the Open
- Grid Forum.
+ Therefor the department is one of the core development partners of the
+ UNICORE Grid middleware and has members in the Research Data Alliance and
+ the Open Grid Forum.
 \end_layout
 
 \begin_layout Standard
@@ -216,8 +225,8 @@ end{enumerate}
 \end_layout
 
 \begin_layout Standard
-The goal of the internship is to build classification models for data sets
- that show problems of 'big data' .
+During my internship at this group the goal is to build classification models
+ for data sets that show problems of 'big data' .
  Support Vector Machines are the focused method, but other methods are considere
 d as well.
  This report shows the different problems and their solutions of several
