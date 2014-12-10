@@ -130,10 +130,6 @@ tabs-within-sections
 Human Brain Project - brain analytics
 \end_layout
 
-\begin_layout Subsection
-The Project
-\end_layout
-
 \begin_layout Standard
 The Human Brain Project aims to acquire a better understanding of the human
  brain by modeling it as a whole.
@@ -161,16 +157,41 @@ status open
 
 \backslash
 begin{figure}[h] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 centering 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 includegraphics[width=0.6
 \backslash
 linewidth]{graphics/original603} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 caption{An image of a cross section of a human brain} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 label{fig:original603} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 end{figure}
 \end_layout
