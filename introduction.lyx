@@ -135,8 +135,8 @@ The Research Centre Jülich researches key technologies for the 21st century.
  Different tools are needed for all kinds of experiments.
  Because these tools are often very specialized, the Research Centre has
  to develop them itself.
- Apart from this experiment related software, there are many simulation
- and data problems that have to be solved.
+ Apart from the experiment related software, there are many simulation and
+ data problems that have to be solved.
  
 \end_layout
 
@@ -153,8 +153,8 @@ key "jsc"
 \end_inset
 
 .
- Besides the hardware the institute provides different software solutions
- for parallel computing.
+ Besides hardware the institute raises different software solutions for
+ parallel computing.
  
 \end_layout
 
@@ -225,7 +225,7 @@ end{enumerate}
 \end_layout
 
 \begin_layout Standard
-During my internship at this group the goal is to build classification models
+During internship for this group the goal is to build classification models
  for data sets that show problems of 'big data' .
  Support Vector Machines are the focused method, but other methods are considere
 d as well.
