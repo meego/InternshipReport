@@ -131,7 +131,34 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The division Federated Systems and Data of the Juelich Super Computing Centre
+The Research Centre Jülich researches key technologies for the 21st century.
+ Several different tools are needed for all kinds of experiments.
+ Since these tools are often very specialized, the Research Centre has to
+ develop them itself.
+ Apart from this experiment driven software, there are many simulation and
+ data driven problems that have to be solved.
+ 
+\end_layout
+
+\begin_layout Standard
+The Jülich Super Computing Centre JSC provides the ressources for this computati
+ons.
+ This includes the hardware needed for computation.
+ The JSC has several clusters that can be used for computation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jsc"
+
+\end_inset
+
+.
+ Besides the hardware ressources the institute provides different software
+ solutions for parallel computing.
+ 
+\end_layout
+
+\begin_layout Standard
+The division Federated Systems and Data of the Jülich Super Computing Centre
  provides access to distributed resources like HPC systems and data.
  This is done by implementing open standards and simplifying usage and administr
 ation of these services.

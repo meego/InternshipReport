@@ -23,7 +23,7 @@ Concepts and Techniques},
 }
 
 @InProceedings{Williams01usingthe,
-  Title                    = {Using the Nyström Method to Speed Up Kernel Machines},
+  Title                    = {Using the Nystr\"{o}m Method to Speed Up Kernel Machines},
   Author                   = {Christopher Williams and Matthias Seeger},
   Booktitle                = {Advances in Neural Information Processing Systems 13},
   Year                     = {2001},
