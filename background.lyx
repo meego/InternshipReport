@@ -154,19 +154,30 @@ key "sklearn"
 \end_layout
 
 \begin_layout Standard
-The tasks are executed on a super computer at the Juelich Supercomputing
+Some tasks are executed on a super computer at the Juelich Supercomputing
  Centre.
  It uses a PBS based batch system to handle the different jobs of users
  and distribute the available nodes.
  A popular method for distributed memory multiprocessing is MPI.
- It is, however, not being used here.
+ It stands for message passing interface.
+ The processes do not share any memory and therefore needed data has to
+ be communicated over messages.
+ This ranges from simple send and recieve functions to more complex ones
+ like broadcast or scatter and gather functions.
 \end_layout
 
 \begin_layout Standard
-IPython is an interactive python shell with many improvements.
- One of them is interactive parallel computing.
- This allows parallelizing python code in an interactive python session
- and has a robust error handling.
+An alternative to MPI based multiprocessing is the map/reduce approach used
+ by hadoop and other frameworks.
+ For this a distributed filesystem like the hadoop files system (hdfs) is
+ needed.
+ The data is split into subsets and distributed on the single machines.
+ On each machine the same map job is executed on the local data set.
+ The results of the map jobs are saved as key value pairs, so that the reducer
+ jobs can further evaluate them.
+ The number of algorithms that can profit from this method are limited because
+ they need to be seperatable into a map and a reduce job.
+ There are some frameworks that can handle more general algorithms.
  
 \end_layout
 
@@ -185,6 +196,21 @@ lstinputlisting[language=bash,caption=pbs.controller.template,label=pbs_template
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+IPython is an interactive python shell with many improvements.
+ One of its most known features is the ipython notebook.
+ It is browser based and supports code, text, mathematical expressions,
+ plots and other media.
+ Because of this it is often used in teaching or for reproducable science.
+ Another feature is its capabiltiy of parallel computing.
+ It supports different styles of parallelism like task or data parallelism
+ and MPI.
+ This allows parallelizing python code in an interactive python session
+ and has a robust error handling.
+ Furthermore the ipython clusters can be started with a PBS scheduler.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -207,10 +233,6 @@ ipcluster~start~--profile=pbs~-n~8
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
