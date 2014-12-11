@@ -137,12 +137,28 @@ The Data
 \end_layout
 
 \begin_layout Standard
-The data is not given as a classic table and therefor not directly useable
+The data is not given as a classic table and therefore not directly useable
  for classification.
  It consists of two sets of images.
- The first one contains the original images of each cross section and a
- corresponding mask.
- A mask is a grayscale image with only black or white pixels.
+ The first one contains the original images of each cross section as RGB
+ images (fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:original603"
+
+\end_inset
+
+).
+ The second one has the masks (fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:mask603"
+
+\end_inset
+
+), a gray scale image with only black or white pixels.
  A pixel is white if it belongs to the cross section and black if it does
  not.
  There are 
@@ -153,105 +169,7 @@ The data is not given as a classic table and therefor not directly useable
 \begin_inset Formula $3272\times2469$
 \end_inset
 
-, resulting in a huge amount of pixels.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{lstlisting}[caption=libsvm format,label=lisbsvm] 
-\end_layout
-
-\begin_layout Plain Layout
-
-<class_label> <feature_id>:value ...
- <feature_id>:value
-\end_layout
-
-\begin_layout Plain Layout
-
-<class_label> <feature_id>:value ...
- <feature_id>:value ...
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{lstlisting} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The classification problem is a binary one since there are only two classes.
- Before a classifier can be trained, the images have to be converted into
- a attribute value format.
- The libsvm format was chosen, because it is well known and many libraries
- support it.
- Every row represents one instance, which is in this case one pixel and
- its features.
- Currently the only features available are the rgb values of a pixel from
- the original image and the class label from the mask.
- 
-\end_layout
-
-\begin_layout Subsection
-Data Preparation
-\end_layout
-
-\begin_layout Standard
-In the first preprocessing step the libsvm data is created.
- The easiest method saves for each pixel the rgb values and the class label.
- This is done for every image resulting in 
-\begin_inset Formula $762$
-\end_inset
-
- files.
- Every file has 
-\begin_inset Formula $8.078.568$
-\end_inset
-
- instances, so there are 
-\begin_inset Formula $6.155.868.816$
-\end_inset
-
- pixels in total.
- A first trivial approach took about 3 days to generate all attribute value
- files.
-\end_layout
-
-\begin_layout Standard
-Building a model on this set would take a huge amount of time and is therefor
- unreasonable for selecting a model.
- Instead of using the complete data set samples have to be used.
- As figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:mask603"
-
-\end_inset
-
- shows there are more instances of class 
-\begin_inset Formula $0$
-\end_inset
-
- (black pixels) than of class 
-\begin_inset Formula $1$
-\end_inset
-
- (white pixels).
- To weight both classes equally, the sampled set is balanced.
- 
+.
 \end_layout
 
 \begin_layout Standard
@@ -305,6 +223,131 @@ end{figure}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+As stated above there are two classes in total, so that the classification
+ task is a binary one.
+ Before a classifier can be trained, the images have to be converted into
+ a attribute value format and saved in a file.
+ This could be a simple csv file or any other format that can handle table
+ like data.
+ In this case the libsvm format was chosen, because it is supported by many
+ svm libraries, e.g.
+ scikit-learn.
+ Every row represents one instance, which is in this case one pixel and
+ its features.
+ Currently the only features available are the rgb values of a pixel from
+ the original image and the class label from the mask.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "libsvm"
+
+\end_inset
+
+ shows the libsvm format schematically.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}[caption=libsvm format,label=libsvm] 
+\end_layout
+
+\begin_layout Plain Layout
+
+<class_label> <feature_id>:value ...
+ <feature_id>:value
+\end_layout
+
+\begin_layout Plain Layout
+
+<class_label> <feature_id>:value ...
+ <feature_id>:value ...
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Preparation
+\end_layout
+
+\begin_layout Standard
+In the first preprocessing step the libsvm data is created.
+ The easiest method saves for each pixel the rgb values and the class label.
+ This is done for every image resulting in 
+\begin_inset Formula $762$
+\end_inset
+
+ files.
+ Every file has 
+\begin_inset Formula $8.078.568$
+\end_inset
+
+ instances, so there are 
+\begin_inset Formula $6.155.868.816$
+\end_inset
+
+ pixels in total.
+ A first trivial approach took about 3 days to generate all attribute value
+ files.
+ The RGB values can be read directly from the original images.
+ The class label is set to 
+\begin_inset Formula $1$
+\end_inset
+
+ of the corresponding pixelvalue in the mask is greater than 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ If this is not the case it is set to 
+\begin_inset Formula $0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Building a model on this set would take a huge amount of time and is therefor
+ unreasonable for selecting a model.
+ Instead of using the complete data set samples have to be used.
+ As figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:mask603"
+
+\end_inset
+
+ shows there are more instances of class 
+\begin_inset Formula $0$
+\end_inset
+
+ (black pixels) than of class 
+\begin_inset Formula $1$
+\end_inset
+
+ (white pixels).
+ To weight both classes equally, the sampled set is balanced.
+ 
 \end_layout
 
 \begin_layout Standard
