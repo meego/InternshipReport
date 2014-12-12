@@ -324,11 +324,35 @@ In the first preprocessing step the libsvm data is created.
 \end_inset
 
 .
+ This was done with a python script, which was executed on Judge, a supercompute
+r of the JSC with 
+\begin_inset Formula $2472$
+\end_inset
+
+ nodes and 
+\begin_inset Formula $412$
+\end_inset
+
+ graphic processors.
+ The python script is started with a msub script reserving 
+\begin_inset Formula $1$
+\end_inset
+
+ one core with 
+\begin_inset Formula $1$
+\end_inset
+
+ node.
+ To speed up the calculation time, the python script was changed so that
+ it expects a range as parameters that says which image files it should
+ convert.
+ With this several jobs can be started with a different range argument resulting
+ in a faster computation.
 \end_layout
 
 \begin_layout Standard
-Building a model on this set would take a huge amount of time and is therefor
- unreasonable for selecting a model.
+Building a model on the whole set would take a huge amount of time and is
+ therefore unreasonable for creating a classifier.
  Instead of using the complete data set samples have to be used.
  As figure 
 \begin_inset CommandInset ref
@@ -371,7 +395,33 @@ The first approach is a balanced random sampling method.
 
  instances of each class are drawn randomly.
  This can easily be parallelized since the files can be sampled independently.
- This yields a first sample with three features.
+ 
+\end_layout
+
+\begin_layout Standard
+An alternative method is to resize the images to a much smaller resolution
+ (e.g.
+ 
+\begin_inset Formula $256\times256$
+\end_inset
+
+ ).
+ This is done for a number of images that are uniformly distributed among
+ the different layers of the brain.
+ If random sampling is used it may be the case that some 
+\begin_inset Quotes eld
+\end_inset
+
+clusters
+\begin_inset Quotes erd
+\end_inset
+
+ are not sampled from.
+ 
+\end_layout
+
+\begin_layout Standard
+This yields a first sample with three features.
  To improve the classifier the number of features has to be increased.
 \end_layout
 
@@ -545,7 +595,7 @@ def calc_std(img,size,use_mean=False):
 
 \begin_layout Plain Layout
 
-                    if True the standard deviation of the mean is returned.
+                   if True the standard deviation of the mean is returned.
 \end_layout
 
 \begin_layout Plain Layout
@@ -633,6 +683,44 @@ Data Modeling
 
 \begin_layout Subsubsection
 Support Vector Machines
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/linear_nonlinear.pdf
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

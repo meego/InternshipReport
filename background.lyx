@@ -164,6 +164,63 @@ Some tasks are executed on a super computer at the Juelich Supercomputing
  be communicated over messages.
  This ranges from simple send and recieve functions to more complex ones
  like broadcast or scatter and gather functions.
+ The left side of figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "mpimap"
+
+\end_inset
+
+ shows a visualization of MPI multiprocessing.
+ The red arrows are the messages that are passed between the processes,
+ which are represented by the blue arrows.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/mpimap.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Multiprocessing on P1-P6 processors using MPI (left) and
+\begin_inset Newline newline
+\end_inset
+
+on P1-P3 processors using map/reduce (right).
+\begin_inset CommandInset label
+LatexCommand label
+name "mpimap"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -189,8 +246,8 @@ status open
 
 
 \backslash
-lstinputlisting[language=bash,caption=pbs.controller.template,label=pbs_template]{.
-/code/pbs.engine.template}
+lstinputlisting[float,language=bash,caption=pbs.controller.template,label=pbs_temp
+late]{./code/pbs.engine.template}
 \end_layout
 
 \end_inset
