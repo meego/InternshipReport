@@ -62,9 +62,9 @@ figs-within-sections
 tabs-within-sections
 \end_modules
 \maintain_unincluded_children false
-\language english
-\language_package default
-\inputencoding auto
+\language british
+\language_package babel
+\inputencoding latin9
 \fontencoding global
 \font_roman default
 \font_sans default
@@ -115,7 +115,7 @@ tabs-within-sections
 \paragraph_indentation default
 \quotes_language english
 \papercolumns 1
-\papersides 1
+\papersides 2
 \paperpagestyle default
 \tracking_changes false
 \output_changes false

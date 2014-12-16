@@ -54,7 +54,6 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
-\usepackage{multicol}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -63,9 +62,9 @@ figs-within-sections
 tabs-within-sections
 \end_modules
 \maintain_unincluded_children false
-\language english
-\language_package default
-\inputencoding auto
+\language british
+\language_package babel
+\inputencoding latin9
 \fontencoding global
 \font_roman default
 \font_sans default
@@ -82,7 +81,6 @@ tabs-within-sections
 \output_sync 0
 \bibtex_command default
 \index_command default
-\float_placement H
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -117,7 +115,7 @@ tabs-within-sections
 \paragraph_indentation default
 \quotes_language english
 \papercolumns 1
-\papersides 1
+\papersides 2
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
@@ -408,15 +406,20 @@ An alternative method is to resize the images to a much smaller resolution
  ).
  This is done for a number of images that are uniformly distributed among
  the different layers of the brain.
- If random sampling is used it may be the case that some 
-\begin_inset Quotes eld
+ An image has several different sections like the cross section, the brain
+ in the background or the ice.
+ If random sampling is used, it may happen that some of these sections are
+ not represented by the sample.
+ The lower the percentage 
+\begin_inset Formula $p$
 \end_inset
 
-clusters
-\begin_inset Quotes erd
-\end_inset
+ is, the higher the chance gets that some sections is missed.
+ 
+\end_layout
 
- are not sampled from.
+\begin_layout Standard
+Because of this later samples were made by resizing the images.
  
 \end_layout
 
@@ -432,9 +435,56 @@ HSV color space
 \begin_layout Standard
 An easy method to increase the number of features is to use another color
  space in addition to the given RGB values.
- In this case the HSV color space was chosen.
- It represents a color by its hue, saturation and value.
- The values for a pixel can easily be transformed from RGB to HSV with the
+ In this case the HSV color space was chosen, because it is similiar to
+ the human color vision.
+ Furthermore it is used for object detection because methods used on grayscale
+ images can easily be used on images in the HSV space by using them on each
+ color component.
+ 
+\end_layout
+
+\begin_layout Standard
+The HSV color space has three components hue, saturation and value.
+ The hue (H) is the angle on the chromatic circle and is therefore between
+ 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $360$
+\end_inset
+
+.
+ The second and third components saturation (S) and lightness (V) are given
+ in percentage, so their value is between 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $1$
+\end_inset
+
+ (or 
+\begin_inset Formula $0-100\%$
+\end_inset
+
+).
+ If the saturation is 
+\begin_inset Formula $1$
+\end_inset
+
+, the color is clear.
+ For a low saturation the color becomes gray.
+ If the lightness is 
+\begin_inset Formula $0$
+\end_inset
+
+, the color is black.
+ 
+\end_layout
+
+\begin_layout Standard
+The values for a pixel can easily be transformed from RGB to HSV with the
  following formula:
 \end_layout
 
@@ -536,6 +586,7 @@ Despite adding the HSV color space, there is still no information on the
 \end_inset
 
  array around a pixel and assigned to the centered pixel.
+ This is done for every pixel of the image.
  Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -544,21 +595,30 @@ reference "calc_std"
 \end_inset
 
  shows how the standard deviation is calculated for an image.
- This is done with the numpy and scipy modules.
- The 
+ This is done with the numpy and scipy modules, which are optimized so that
+ the calculation time is not too long.
+ 
+\end_layout
+
+\begin_layout Standard
+The 
 \emph on
 generic_filter
 \emph default
  function generates a window with the given size for every pixel and calls
  the given function (e.g.
  numpy.std).
+ However, the parameter of the called function is an one dimensional array.
+ If the function needs a two dimensional one, it has to know the original
+ shape of the window and reshape it.
+ For most statistical measures this is not needed.
  The standard deviation is an indication for the homogenity of the pixel's
  neighbourhood.
 \end_layout
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2"
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,float,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2"
 inline false
 status open
 
@@ -659,8 +719,9 @@ def calc_std(img,size,use_mean=False):
 \end_layout
 
 \begin_layout Standard
-By using the local standard deviation as a feature some information of the
- neighbourhood is used, but this can be improved with other features.
+By using the local standard deviation as a feature some first information
+ of the neighbourhood is available.
+ This can be further improved by other features.
 \end_layout
 
 \begin_layout Subsubsection
@@ -668,13 +729,25 @@ Image Segmentation
 \end_layout
 
 \begin_layout Standard
-A more complex feature can be achieved by performing watershed segmentation.
- It is used on grayscale images and the pixel values are treated as a elevation.
- The algorithm floods basins from markers, which were set by the user.
+Watershed is an image segmentation algorithm that is used on grayscale images.
+ The gray level of a pixel is interpreted as its altitude and the image
+ is seen as a ground.
+ Water, that is filled into this ground from different markers, flows to
+ a local minimum.
+ 
+\end_layout
+
+\begin_layout Standard
+The algorithm floods basins from markers, which were set by the user.
  When two basins from different markers meet a watershed is drawn.
  The markers can be set in an easy way by using thresholds.
  While there are more complex ways using image processing methods, the threshold
- approach is used to keep the feature generation simple
+ approach is used to keep the feature generation as simple as possible.
+\end_layout
+
+\begin_layout Standard
+This yields a binary feature that is either one or zero and is used for
+ training the classifier.
 \end_layout
 
 \begin_layout Subsection
@@ -706,6 +779,15 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+Classification using Support Vector Machines.
+ Linear expample on the left side.
+ Non linear example on the right side.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:svm"
+
+\end_inset
+
 
 \end_layout
 
@@ -728,12 +810,24 @@ Support vector machines (SVMs) are one of the preferred classification methods
  lately.
  They have a high accuracy, but their training time is quite long.
  A model can easily be described by the found support vectors.
+ Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:svm"
+
+\end_inset
+
+ shows a basic visualization of an SVM.
+ On the left side a line is drawn that seperates both classes.
+ This is the decision boundary.
+ The right side is not linear separable.
+ A kernel is used to push the data into a higher dimension, so that the
+ classes are linear seperable again.
+ 
 \end_layout
 
 \begin_layout Standard
-SVMs can model nonlinear decision boundaries by using other kernels instead
- of the linear kernel to increase the dimension of a vector.
- A kernel defines the used scalar product.
+A kernel defines the used scalar product.
  The most popular kernels are the following:
 \end_layout
 
@@ -793,6 +887,14 @@ end{itemize}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Unlike other classification methods (e.g.
+ neural networks, naive bayes) SVMs need only a small training set in theory.
+ Additional instances only affect the classifier if they contain new support
+ vectors.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1159,7 +1261,7 @@ key "Rahimi"
 
 .
 \begin_inset listings
-lstparams "caption={kernel approximation using scikti learn},label={kernel approximation},language=Python"
+lstparams "caption={kernel approximation using scikti learn},float,label={kernel approximation},language=Python"
 inline false
 status open
 
@@ -1322,29 +1424,19 @@ With only one model for all the different cross section the prediction is
 
 \begin_layout Standard
 This has several advantages in comparison to using one model.
+ By increasing the number of models each single model is simpler.
+ It also decreases the training time.
+ This has two reasons.
+ The first is that the amount of training data for each model is less because
+ the data is sliced into different layers.
+ In addition the training of the models can easily be parallelized because
+ they are completely independent from each other.
  
 \end_layout
 
-\begin_layout Itemize
-simpler models 
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-Ausformulieren?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-less training data for each model
-\end_layout
-
-\begin_layout Itemize
-more specialized models
+\begin_layout Standard
+Using multiple models can also be useful if the color between the different
+ layers varies slightly.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1432,10 +1524,6 @@ TODO implement function and include an image
 
 \begin_layout Subsection
 Deployement
-\end_layout
-
-\begin_layout Subsection
-Conclusion
 \end_layout
 
 \end_body
