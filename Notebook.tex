@@ -1,0 +1,269 @@
+  \section{From Preprocessing to Evaluation}
+
+
+    This notebook shows the different steps that are needed to classify the
+brain cross sections. It starts with the data preprocessing and ends
+with a final model. Several different functions are used by the imported
+custom modules. This is done, so that the notebook stays clear. If you
+want to take a detailed look at the used functions, feel free to use the
+different source files.
+
+At the beginning the client is set up, so that the engines can be
+accessed and used.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c}{\PYZsh{} Import the client and the imp module to load source files on all engines}
+        \PY{k+kn}{from} \PY{n+nn}{IPython.parallel} \PY{k+kn}{import} \PY{n}{Client}
+        \PY{n}{c} \PY{o}{=} \PY{n}{Client}\PY{p}{(}\PY{p}{)}
+        \PY{n}{dview} \PY{o}{=} \PY{n}{c}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{block} \PY{o}{=} \PY{n+nb+bp}{True}
+        \PY{k}{with} \PY{n}{dview}\PY{o}{.}\PY{n}{sync\PYZus{}imports}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k+kn}{import} \PY{n+nn}{imp}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+importing imp on engine(s)
+    \end{Verbatim}
+
+
+    \paragraph{Generating samples}
+
+
+    The training data can be sampled. In this example this is done by
+rescaling some images to a size of 256x256.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c}{\PYZsh{} resizing the images}
+        \PY{k+kn}{import} \PY{n+nn}{glob}
+        \PY{n}{masks} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/masks/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{images} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/images/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+        
+        \PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{)}
+        \PY{n}{resized\PYZus{}images} \PY{o}{=} \PY{p}{[}\PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{size}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{images}\PY{p}{]}
+        \PY{n}{resized\PYZus{}masks} \PY{o}{=} \PY{p}{[}\PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{size}\PY{p}{)} \PY{k}{for} \PY{n}{m} \PY{o+ow}{in} \PY{n}{images}\PY{p}{]}
+\end{Verbatim}
+
+
+    \paragraph{Converting and Adding Features}
+
+
+    The following code block shows how to generate libsvm formated data from
+an original image and the hand labeled mask. This is done on multiple
+engines started by ipython. In this example the used features are:
+
+\begin{verbatim}
+R,G,B,std(R),std(G),std(B),segmentation_bit,H,S,V
+\end{verbatim}
+
+The window size for the image is 16x16 pixel. The thresholds for
+watershed segmentation are set as p=0.2 and q=0.8. Custom features can
+be added easily. A feature that needs the original image needs to be set
+in the new\_features list. If only the pixel is needed, the
+online\_feature list is sufficient.
+
+Because callables are passed, the user can add any new function. The
+only condition is that the first argument is the image/pixel. If the
+function has more arguments, the \emph{partial} function can be used to
+create a new one with only one argument.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c}{\PYZsh{} load data conversion and feature extration modules locally and on the engines}
+        \PY{n}{dc} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{data\PYZus{}conversion}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                             \PY{l+s}{\PYZdq{}}\PY{l+s}{../parallel/data\PYZus{}generation/data\PYZus{}conversion.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{fe} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{feature\PYZus{}extraction}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                             \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/feature\PYZus{}extraction.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{c}{\PYZsh{} use the direct view to load the modules}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{dc = imp.load\PYZus{}source(}\PY{l+s}{\PYZdq{}}\PY{l+s}{data\PYZus{}conversion}\PY{l+s}{\PYZdq{}}\PY{l+s}{,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    }\PY{l+s}{\PYZdq{}}\PY{l+s}{../parallel/data\PYZus{}generation/data\PYZus{}conversion.py}\PY{l+s}{\PYZdq{}}\PY{l+s}{)}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{fe = imp.load\PYZus{}source(}\PY{l+s}{\PYZdq{}}\PY{l+s}{feature\PYZus{}extraction}\PY{l+s}{\PYZdq{}}\PY{l+s}{,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    }\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/feature\PYZus{}extraction.py}\PY{l+s}{\PYZdq{}}\PY{l+s}{)}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} set masks and images, that are to be converted, as lists}
+        \PY{c}{\PYZsh{} be aware that masks[0] must belong to images[0]. This is done by sorting the lists}
+        \PY{k+kn}{import} \PY{n+nn}{glob}
+        \PY{n}{masks} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/masks/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n}{images} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/images/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} scatter the images and mask to the engines}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{images}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{images}\PY{p}{)}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{masks}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{masks}\PY{p}{)}
+        
+        \PY{k}{with} \PY{n}{dview}\PY{o}{.}\PY{n}{sync\PYZus{}imports}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k+kn}{from} \PY{n+nn}{functools} \PY{k+kn}{import} \PY{n}{partial}
+        
+        \PY{c}{\PYZsh{} add features and convert the images}
+        \PY{n}{out\PYZus{}dir} \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test}\PY{l+s}{\PYZdq{}}
+        \PY{n}{dview}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{out\PYZus{}dir}\PY{l+s}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{out\PYZus{}dir}
+        \PY{n}{cmd} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{dc.convert\PYZus{}and\PYZus{}save(images,masks,out\PYZus{}dir,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    new\PYZus{}features=[partial(fe.calc\PYZus{}std,size=16),}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    partial(fe.findSegmentation,p=0.2)],online\PYZus{}features=[fe.add\PYZus{}hsv])}\PY{l+s}{\PYZsq{}}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{n}{cmd}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+importing partial from functools on engine(s)
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} <AsyncResult: finished>
+\end{Verbatim}
+        
+
+    \paragraph{Create training and testing sets}
+
+
+    The data can be combined into training and testing sets. The data is
+shuffled and the sets are class balanced by default. The
+\emph{combine\_files} method can be used to generate training sets for
+the different layers, if multiple models are used.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{sampling} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{sample\PYZus{}files}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{../data\PYZus{}generation/random\PYZus{}sampling/sample\PYZus{}files.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{OUT} \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test}\PY{l+s}{\PYZdq{}}
+        
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{combine\PYZus{}files}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test/}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{ALL.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{split\PYZus{}train\PYZus{}test}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test/}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                  \PY{l+s}{\PYZdq{}}\PY{l+s}{ALL.svm}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{n}{shuffle}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Build a SVM classifier}
+
+
+    To build a classifier, first the training and test data have to be
+loaded. In this case it is a single cross section, but any combination
+of the different images can be used. This can be done with
+\emph{sample.combine\_files}.
+
+The data is normalized and additional features are added. Instead of the
+RBFSampler the Nystroem method can be used to generate different
+features or approximate another kernel.
+
+At the end the classifier is trained with parameters optimized with a
+grid search. Instead of building one classifier, grid search may be used
+to test different parameters on the current data set. After this the
+model can easily be saved with the pickle module which is part of the
+python standard library. It can also be used to save the RBFSampler
+which is needed if new data should be predicted.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{from} \PY{n+nn}{skimage.io} \PY{k+kn}{import} \PY{n}{imshow}\PY{p}{,}\PY{n}{imread}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.kernel\PYZus{}approximation} \PY{k+kn}{import} \PY{n}{RBFSampler}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.svm} \PY{k+kn}{import} \PY{n}{LinearSVC}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}svmlight\PYZus{}file}
+        
+        \PY{c}{\PYZsh{} load training set}
+        \PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{load\PYZus{}svmlight\PYZus{}file}\PY{p}{(}\PYZbs{}
+                        \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0110.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} normalize data}
+        \PY{n}{max\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{min\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}train}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{max\PYZus{}val}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} load test image}
+        \PY{n}{X\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{load\PYZus{}svmlight\PYZus{}file}\PY{p}{(}\PYZbs{}
+                        \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/segmentation/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0200.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}
+        \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}test}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{max\PYZus{}val}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} generate additional features}
+        \PY{n}{rbf} \PY{o}{=} \PY{n}{RBFSampler}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{X\PYZus{}features} \PY{o}{=} \PY{n}{rbf}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}
+        \PY{n}{X\PYZus{}test\PYZus{}features} \PY{o}{=} \PY{n}{rbf}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} train linear SVM on highdimensional data}
+        \PY{n}{linearSVM} \PY{o}{=} \PY{n}{LinearSVC}\PY{p}{(}\PY{n}{dual}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}\PY{n}{C}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{)}
+        \PY{n}{linearSVM}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}features}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} save model }
+        \PY{k+kn}{import} \PY{n+nn}{pickle}
+        \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{SVMClassifier.pkl}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{w}\PY{l+s}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{pickle}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{linearSVM}\PY{p}{,}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Classify test image}
+
+
+    If the classifier is not trained in the current session, it can be
+loaded with the pickle module. After adding the random features the
+class can be predicted usign the \emph{predict} method of the
+classifier. The predicted labels can be reshaped, so that the new mask
+can be printed.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c}{\PYZsh{} load model}
+        \PY{k+kn}{import} \PY{n+nn}{pickle}
+        \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{SVMClassifier.pkl}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{r}\PY{l+s}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{linearSVM} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+            
+        \PY{c}{\PYZsh{} load hand labeled mask}
+        \PY{n}{mask} \PY{o}{=} \PY{n}{imread}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/segmentation/masks/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0200.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{labels} \PY{o}{=} \PY{n}{linearSVM}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}features}\PY{p}{)}
+        \PY{n}{labels} \PY{o}{=} \PY{n}{labels}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+        
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} \PY{n}{inline}
+        \PY{n}{imshow}\PY{p}{(}\PY{n}{labels}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{graphics/FullRun_17_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    If the data is also labeled by hand, the quality of the model can be
+measured. The following function calculates the accuracy as well as the
+f-score. It also returns the confusion matrix.
+
+Because the classified data is an image, the confusion matrix is
+visualized as an image. All true positives are colored white and all
+true negatives black. With 100\% accuracy this would result in the hand
+labeled mask. Since this is most often not the case, all false positives
+are marked red and all false negatives blue.
+
+This gives a good first impression on the quality of the classifier. If
+the predicted labels are post processed by hand, it furthermore gives an
+indication which regions cause problems.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+        \PY{k+kn}{from} \PY{n+nn}{collections} \PY{k+kn}{import} \PY{n}{namedtuple}
+        
+        \PY{n}{AccuracyMetrics} \PY{o}{=} \PY{n}{namedtuple}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{AccuracyMetrics}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PYZbs{}
+                                     \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{accuracy}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{fscore}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{confusion\PYZus{}matrix}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{image}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{compare\PYZus{}to\PYZus{}mask}\PY{p}{(}\PY{n}{pred}\PY{p}{,}\PY{n}{mask}\PY{p}{)}\PY{p}{:}
+            \PY{n}{size} \PY{o}{=} \PY{n}{pred}\PY{o}{.}\PY{n}{shape}
+            \PY{n}{img} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{uint8}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{tp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{fp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{fn} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{tp}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{fp}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{fn}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            
+            \PY{n}{acc} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{normalize}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+            \PY{n}{fscore} \PY{o}{=} \PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{cm} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            
+            \PY{k}{return} \PY{n}{AccuracyMetrics}\PY{p}{(}\PY{n}{acc}\PY{p}{,}\PY{n}{fscore}\PY{p}{,}\PY{n}{cm}\PY{p}{,}\PY{n}{img}\PY{p}{)}
+        
+        \PY{n}{metrics} \PY{o}{=} \PY{n}{compare\PYZus{}to\PYZus{}mask}\PY{p}{(}\PY{n}{labels}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{labels}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+        \PY{n}{imshow}\PY{p}{(}\PY{n}{metrics}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{graphics/FullRun_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    

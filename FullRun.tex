@@ -1,0 +1,496 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{article}
+
+    
+    
+    \usepackage{graphicx} % Used to insert images
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{FullRun}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+
+    \section{From Preprocessing to Evaluation}
+
+
+    This notebook shows the different steps that are needed to classify the
+brain cross sections. It starts with the data preprocessing and ends
+with a final model. Several different functions are used by the imported
+custom modules. This is done, so that the notebook stays clear. If you
+want to take a detailed look at the used functions, feel free to use the
+different source files.
+
+At the beginning the client is set up, so that the engines can be
+accessed and used.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c}{\PYZsh{} Import the client and the imp module to load source files on all engines}
+        \PY{k+kn}{from} \PY{n+nn}{IPython.parallel} \PY{k+kn}{import} \PY{n}{Client}
+        \PY{n}{c} \PY{o}{=} \PY{n}{Client}\PY{p}{(}\PY{p}{)}
+        \PY{n}{dview} \PY{o}{=} \PY{n}{c}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{block} \PY{o}{=} \PY{n+nb+bp}{True}
+        \PY{k}{with} \PY{n}{dview}\PY{o}{.}\PY{n}{sync\PYZus{}imports}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k+kn}{import} \PY{n+nn}{imp}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+importing imp on engine(s)
+    \end{Verbatim}
+
+
+    \paragraph{Generating samples}
+
+
+    The training data can be sampled. In this example this is done by
+rescaling some images to a size of 256x256.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c}{\PYZsh{} resizing the images}
+        \PY{k+kn}{import} \PY{n+nn}{glob}
+        \PY{n}{masks} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/masks/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{images} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/images/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{k+kn}{from} \PY{n+nn}{PIL} \PY{k+kn}{import} \PY{n}{Image}
+        
+        \PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{)}
+        \PY{n}{resized\PYZus{}images} \PY{o}{=} \PY{p}{[}\PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{size}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{images}\PY{p}{]}
+        \PY{n}{resized\PYZus{}masks} \PY{o}{=} \PY{p}{[}\PY{n}{Image}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{o}{.}\PY{n}{resize}\PY{p}{(}\PY{n}{size}\PY{p}{)} \PY{k}{for} \PY{n}{m} \PY{o+ow}{in} \PY{n}{images}\PY{p}{]}
+\end{Verbatim}
+
+
+    \paragraph{Converting and Adding Features}
+
+
+    The following code block shows how to generate libsvm formated data from
+an original image and the hand labeled mask. This is done on multiple
+engines started by ipython. In this example the used features are:
+
+\begin{verbatim}
+R,G,B,std(R),std(G),std(B),segmentation_bit,H,S,V
+\end{verbatim}
+
+The window size for the image is 16x16 pixel. The thresholds for
+watershed segmentation are set as p=0.2 and q=0.8. Custom features can
+be added easily. A feature that needs the original image needs to be set
+in the new\_features list. If only the pixel is needed, the
+online\_feature list is sufficient.
+
+Because callables are passed, the user can add any new function. The
+only condition is that the first argument is the image/pixel. If the
+function has more arguments, the \emph{partial} function can be used to
+create a new one with only one argument.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c}{\PYZsh{} load data conversion and feature extration modules locally and on the engines}
+        \PY{n}{dc} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{data\PYZus{}conversion}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                             \PY{l+s}{\PYZdq{}}\PY{l+s}{../parallel/data\PYZus{}generation/data\PYZus{}conversion.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{fe} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{feature\PYZus{}extraction}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                             \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/feature\PYZus{}extraction.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{c}{\PYZsh{} use the direct view to load the modules}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{dc = imp.load\PYZus{}source(}\PY{l+s}{\PYZdq{}}\PY{l+s}{data\PYZus{}conversion}\PY{l+s}{\PYZdq{}}\PY{l+s}{,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    }\PY{l+s}{\PYZdq{}}\PY{l+s}{../parallel/data\PYZus{}generation/data\PYZus{}conversion.py}\PY{l+s}{\PYZdq{}}\PY{l+s}{)}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{fe = imp.load\PYZus{}source(}\PY{l+s}{\PYZdq{}}\PY{l+s}{feature\PYZus{}extraction}\PY{l+s}{\PYZdq{}}\PY{l+s}{,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    }\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/feature\PYZus{}extraction.py}\PY{l+s}{\PYZdq{}}\PY{l+s}{)}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} set masks and images, that are to be converted, as lists}
+        \PY{c}{\PYZsh{} be aware that masks[0] must belong to images[0]. This is done by sorting the lists}
+        \PY{k+kn}{import} \PY{n+nn}{glob}
+        \PY{n}{masks} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/masks/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n}{images} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/images/MSA*.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} scatter the images and mask to the engines}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{images}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{images}\PY{p}{)}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{masks}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{masks}\PY{p}{)}
+        
+        \PY{k}{with} \PY{n}{dview}\PY{o}{.}\PY{n}{sync\PYZus{}imports}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k+kn}{from} \PY{n+nn}{functools} \PY{k+kn}{import} \PY{n}{partial}
+        
+        \PY{c}{\PYZsh{} add features and convert the images}
+        \PY{n}{out\PYZus{}dir} \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test}\PY{l+s}{\PYZdq{}}
+        \PY{n}{dview}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{out\PYZus{}dir}\PY{l+s}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{out\PYZus{}dir}
+        \PY{n}{cmd} \PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{dc.convert\PYZus{}and\PYZus{}save(images,masks,out\PYZus{}dir,}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    new\PYZus{}features=[partial(fe.calc\PYZus{}std,size=16),}\PY{l+s+se}{\PYZbs{}}
+        \PY{l+s}{    partial(fe.findSegmentation,p=0.2)],online\PYZus{}features=[fe.add\PYZus{}hsv])}\PY{l+s}{\PYZsq{}}
+        \PY{n}{dview}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{n}{cmd}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+importing partial from functools on engine(s)
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} <AsyncResult: finished>
+\end{Verbatim}
+        
+
+    \paragraph{Create training and testing sets}
+
+
+    The data can be combined into training and testing sets. The data is
+shuffled and the sets are class balanced by default. The
+\emph{combine\_files} method can be used to generate training sets for
+the different layers, if multiple models are used.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{sampling} \PY{o}{=} \PY{n}{imp}\PY{o}{.}\PY{n}{load\PYZus{}source}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{sample\PYZus{}files}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{../data\PYZus{}generation/random\PYZus{}sampling/sample\PYZus{}files.py}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{OUT} \PY{o}{=} \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test}\PY{l+s}{\PYZdq{}}
+        
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{combine\PYZus{}files}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test/}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{ALL.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sampling}\PY{o}{.}\PY{n}{split\PYZus{}train\PYZus{}test}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/test/}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                  \PY{l+s}{\PYZdq{}}\PY{l+s}{ALL.svm}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{n}{shuffle}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Build a SVM classifier}
+
+
+    To build a classifier, first the training and test data have to be
+loaded. In this case it is a single cross section, but any combination
+of the different images can be used. This can be done with
+\emph{sample.combine\_files}.
+
+The data is normalized and additional features are added. Instead of the
+RBFSampler the Nystroem method can be used to generate different
+features or approximate another kernel.
+
+At the end the classifier is trained with parameters optimized with a
+grid search. Instead of building one classifier, grid search may be used
+to test different parameters on the current data set. After this the
+model can easily be saved with the pickle module which is part of the
+python standard library. It can also be used to save the RBFSampler
+which is needed if new data should be predicted.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{from} \PY{n+nn}{skimage.io} \PY{k+kn}{import} \PY{n}{imshow}\PY{p}{,}\PY{n}{imread}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.kernel\PYZus{}approximation} \PY{k+kn}{import} \PY{n}{RBFSampler}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.svm} \PY{k+kn}{import} \PY{n}{LinearSVC}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}svmlight\PYZus{}file}
+        
+        \PY{c}{\PYZsh{} load training set}
+        \PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{load\PYZus{}svmlight\PYZus{}file}\PY{p}{(}\PYZbs{}
+                        \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/rescaled256x256/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0110.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} normalize data}
+        \PY{n}{max\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{min\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}train}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{max\PYZus{}val}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} load test image}
+        \PY{n}{X\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{load\PYZus{}svmlight\PYZus{}file}\PY{p}{(}\PYZbs{}
+                        \PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/segmentation/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0200.svm}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}
+        \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}test}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{max\PYZus{}val}\PY{o}{\PYZhy{}}\PY{n}{min\PYZus{}val}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} generate additional features}
+        \PY{n}{rbf} \PY{o}{=} \PY{n}{RBFSampler}\PY{p}{(}\PY{n}{gamma}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{X\PYZus{}features} \PY{o}{=} \PY{n}{rbf}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}
+        \PY{n}{X\PYZus{}test\PYZus{}features} \PY{o}{=} \PY{n}{rbf}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} train linear SVM on highdimensional data}
+        \PY{n}{linearSVM} \PY{o}{=} \PY{n}{LinearSVC}\PY{p}{(}\PY{n}{dual}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}\PY{n}{C}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{)}
+        \PY{n}{linearSVM}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}features}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+        
+        \PY{c}{\PYZsh{} save model }
+        \PY{k+kn}{import} \PY{n+nn}{pickle}
+        \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{SVMClassifier.pkl}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{w}\PY{l+s}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{pickle}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{linearSVM}\PY{p}{,}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Classify test image}
+
+
+    If the classifier is not trained in the current session, it can be
+loaded with the pickle module. After adding the random features the
+class can be predicted usign the \emph{predict} method of the
+classifier. The predicted labels can be reshaped, so that the new mask
+can be printed.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c}{\PYZsh{} load model}
+        \PY{k+kn}{import} \PY{n+nn}{pickle}
+        \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{SVMClassifier.pkl}\PY{l+s}{\PYZdq{}}\PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{r}\PY{l+s}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{linearSVM} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+            
+        \PY{c}{\PYZsh{} load hand labeled mask}
+        \PY{n}{mask} \PY{o}{=} \PY{n}{imread}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{../classification/data/segmentation/masks/MSA\PYZus{}03\PYZhy{}2009\PYZus{}dXXXX\PYZhy{}XX\PYZhy{}XX\PYZus{}s0200.tif}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{labels} \PY{o}{=} \PY{n}{linearSVM}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}features}\PY{p}{)}
+        \PY{n}{labels} \PY{o}{=} \PY{n}{labels}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+        
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} \PY{n}{inline}
+        \PY{n}{imshow}\PY{p}{(}\PY{n}{labels}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{FullRun_files/FullRun_17_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    If the data is also labeled by hand, the quality of the model can be
+measured. The following function calculates the accuracy as well as the
+f-score. It also returns the confusion matrix.
+
+Because the classified data is an image, the confusion matrix is
+visualized as an image. All true positives are colored white and all
+true negatives black. With 100\% accuracy this would result in the hand
+labeled mask. Since this is most often not the case, all false positives
+are marked red and all false negatives blue.
+
+This gives a good first impression on the quality of the classifier. If
+the predicted labels are post processed by hand, it furthermore gives an
+indication which regions cause problems.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+        \PY{k+kn}{from} \PY{n+nn}{collections} \PY{k+kn}{import} \PY{n}{namedtuple}
+        
+        \PY{n}{AccuracyMetrics} \PY{o}{=} \PY{n}{namedtuple}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{AccuracyMetrics}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PYZbs{}
+                                     \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{accuracy}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{fscore}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{confusion\PYZus{}matrix}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{image}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{compare\PYZus{}to\PYZus{}mask}\PY{p}{(}\PY{n}{pred}\PY{p}{,}\PY{n}{mask}\PY{p}{)}\PY{p}{:}
+            \PY{n}{size} \PY{o}{=} \PY{n}{pred}\PY{o}{.}\PY{n}{shape}
+            \PY{n}{img} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{mask}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{uint8}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{tp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{fp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{fn} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dstack}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{pred}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{mask}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{tp}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{fp}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            \PY{n}{img}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{all}\PY{p}{(}\PY{n}{fn}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{255}
+            
+            \PY{n}{acc} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{normalize}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+            \PY{n}{fscore} \PY{o}{=} \PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{cm} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{mask}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{pred}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            
+            \PY{k}{return} \PY{n}{AccuracyMetrics}\PY{p}{(}\PY{n}{acc}\PY{p}{,}\PY{n}{fscore}\PY{p}{,}\PY{n}{cm}\PY{p}{,}\PY{n}{img}\PY{p}{)}
+        
+        \PY{n}{metrics} \PY{o}{=} \PY{n}{compare\PYZus{}to\PYZus{}mask}\PY{p}{(}\PY{n}{labels}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{labels}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+        \PY{n}{imshow}\PY{p}{(}\PY{n}{metrics}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{FullRun_files/FullRun_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

@@ -1526,5 +1526,693 @@ TODO implement function and include an image
 Deployement
 \end_layout
 
+\begin_layout Standard
+This notebook shows the different steps that are needed to classify the
+ brain cross sections.
+ It starts with the data preprocessing and ends with a final model.
+ Several different functions are used by the imported custom modules.
+ This is done, so that the notebook stays clear.
+ If you want to take a detailed look at the used functions, feel free to
+ use the different source files.
+\end_layout
+
+\begin_layout Standard
+At the beginning the client is set up, so that the engines can be accessed
+ and used.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Import the client and the imp module to load source files on all engines
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+from IPython.parallel import Client
+\end_layout
+
+\begin_layout Plain Layout
+
+c = Client() dview = c[:] 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.block = True 
+\end_layout
+
+\begin_layout Plain Layout
+
+with dview.sync_imports():     
+\end_layout
+
+\begin_layout Plain Layout
+
+	import imp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The training data can be sampled.
+ In this example this is done by rescaling some images to a size of 256x256.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# resizing the images 
+\end_layout
+
+\begin_layout Plain Layout
+
+import glob masks = glob.glob("../classification/data/rescaled256x256/masks/MSA*.tif
+") 
+\end_layout
+
+\begin_layout Plain Layout
+
+images = glob.glob("../classification/data/rescaled256x256/images/MSA*.tif")
+\end_layout
+
+\begin_layout Plain Layout
+
+from PIL import Image
+\end_layout
+
+\begin_layout Plain Layout
+
+size=(256,256) 
+\end_layout
+
+\begin_layout Plain Layout
+
+resized_images = [Image.open(i).resize(size) for i in images] 
+\end_layout
+
+\begin_layout Plain Layout
+
+resized_masks = [Image.open(m).resize(size) for m in images]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code block shows how to generate libsvm formated data from
+ an original image and the hand labeled mask.
+ This is done on multiple engines started by ipython.
+ In this example the used features are: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R,G,B,std(R),std(G),std(B),segmentation_{b}it,H,S,V$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The window size for the image is 16x16 pixel.
+ The thresholds for watershed segmentation are set as p=0.2 and q=0.8.
+ Custom features can be added easily.
+ A feature that needs the original image needs to be set in the new_features
+ list.
+ If only the pixel is needed, the online_feature list is sufficient.
+ 
+\end_layout
+
+\begin_layout Standard
+Because callables are passed, the user can add any new function.
+ The only condition is that the first argument is the image/pixel.
+ If the function has more arguments, the *partial* function can be used
+ to create a new one with only one argument.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# load data conversion and feature extration modules locally and on the
+ engines 
+\end_layout
+
+\begin_layout Plain Layout
+
+dc = imp.load_source("data_conversion","../parallel/data_generation/data_conversion.
+py") 
+\end_layout
+
+\begin_layout Plain Layout
+
+fe = imp.load_source("feature_extraction","../classification/feature_extraction.py")
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+# use the direct view to load the modules 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.execute('dc = imp.load_source("data_conversion","../parallel/data_generation/d
+ata_conversion.py")') 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.execute('fe = imp.load_source("feature_extraction","../classification/feature_
+extraction.py")')
+\end_layout
+
+\begin_layout Plain Layout
+
+# set masks and images, that are to be converted, as lists 
+\end_layout
+
+\begin_layout Plain Layout
+
+# be aware that masks[0] must belong to images[0].
+ This is done by sorting the lists 
+\end_layout
+
+\begin_layout Plain Layout
+
+import glob 
+\end_layout
+
+\begin_layout Plain Layout
+
+masks = sorted(glob.glob("../classification/data/rescaled256x256/masks/MSA*.tif"))
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+images = sorted(glob.glob("../classification/data/rescaled256x256/images/MSA*.tif"))
+\end_layout
+
+\begin_layout Plain Layout
+
+# scatter the images and mask to the engines 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.scatter("images",images) 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.scatter("masks",masks)
+\end_layout
+
+\begin_layout Plain Layout
+
+with dview.sync_imports():     
+\end_layout
+
+\begin_layout Plain Layout
+
+	from functools import partial
+\end_layout
+
+\begin_layout Plain Layout
+
+# add features and convert the images 
+\end_layout
+
+\begin_layout Plain Layout
+
+out_dir = "../classification/data/rescaled256x256/test" 
+\end_layout
+
+\begin_layout Plain Layout
+
+dview['out_dir'] = out_dir 
+\end_layout
+
+\begin_layout Plain Layout
+
+cmd = 'dc.convert_and_save(images,masks,out_dir,new_features=[partial(fe.calc_std,
+size=16),partial(fe.findSegmentation,p=0.2)],online_features=[fe.add_hsv])'
+ dview.execute(cmd)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The data can be combined into training and testing sets.
+ The data is shuffled and the sets are class balanced by default.
+ The 
+\emph on
+combine_files
+\emph default
+ method can be used to generate training sets for the different layers,
+ if multiple models are used.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sampling = imp.load_source("sample_files","../data_generation/random_sampling/sampl
+e_files.py") 
+\end_layout
+
+\begin_layout Plain Layout
+
+sampling.OUT = "../classification/data/rescaled256x256/test"
+\end_layout
+
+\begin_layout Plain Layout
+
+sampling.combine_files("../classification/data/rescaled256x256/test/","ALL.svm")
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+sampling.split_train_test("../classification/data/rescaled256x256/test/","ALL.svm",t
+est_size=0.5,shuffle=True)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To build a classifier, first the training and test data have to be loaded.
+ In this case it is a single cross section, but any combination of the different
+ images can be used.
+ This can be done with 
+\emph on
+sample.combine_files
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+The data is normalized and additional features are added.
+ Instead of the RBFSampler the Nystroem method can be used to generate different
+ features or approximate another kernel.
+\end_layout
+
+\begin_layout Standard
+At the end the classifier is trained with parameters optimized with a grid
+ search.
+ Instead of building one classifier, grid search may be used to test different
+ parameters on the current data set.
+ After this the model can easily be saved with the pickle module which is
+ part of the python standard library.
+ It can also be used to save the RBFSampler which is needed if new data
+ should be predicted.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from skimage.io import imshow,imread 
+\end_layout
+
+\begin_layout Plain Layout
+
+import numpy as np 
+\end_layout
+
+\begin_layout Plain Layout
+
+from sklearn.kernel_approximation import RBFSampler 
+\end_layout
+
+\begin_layout Plain Layout
+
+from sklearn.svm import LinearSVC 
+\end_layout
+
+\begin_layout Plain Layout
+
+from sklearn.datasets import load_svmlight_file
+\end_layout
+
+\begin_layout Plain Layout
+
+# load training set 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_train,y_train = load_svmlight_file("../classification/data/rescaled256x256/MSA_0
+3-2009_dXXXX-XX-XX_s0110.svm") 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_train = X_train.toarray()
+\end_layout
+
+\begin_layout Plain Layout
+
+# normalize data 
+\end_layout
+
+\begin_layout Plain Layout
+
+max_val = X_train.max(axis=0) 
+\end_layout
+
+\begin_layout Plain Layout
+
+min_val = X_train.min(axis=0) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_train = (X_train-min_val)/(max_val-min_val)
+\end_layout
+
+\begin_layout Plain Layout
+
+# load test image 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_test,y_test = load_svmlight_file("../classification/data/segmentation/MSA_03-200
+9_dXXXX-XX-XX_s0200.svm") 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_test = X_test.toarray() 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_test = (X_test-min_val)/(max_val-min_val)
+\end_layout
+
+\begin_layout Plain Layout
+
+# generate additional features 
+\end_layout
+
+\begin_layout Plain Layout
+
+rbf = RBFSampler(gamma=2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_features = rbf.fit_transform(X_train) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X_test_features = rbf.transform(X_test)
+\end_layout
+
+\begin_layout Plain Layout
+
+# train linear SVM on highdimensional data 
+\end_layout
+
+\begin_layout Plain Layout
+
+linearSVM = LinearSVC(dual=False,C=1000000) 
+\end_layout
+
+\begin_layout Plain Layout
+
+linearSVM.fit(X_features,y_train)
+\end_layout
+
+\begin_layout Plain Layout
+
+# save model  
+\end_layout
+
+\begin_layout Plain Layout
+
+import pickle with open("SVMClassifier.pkl","w") as f:
+\end_layout
+
+\begin_layout Plain Layout
+
+    pickle.dump(linearSVM,f)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the classifier is not trained in the current session, it can be loaded
+ with the pickle module.
+ After adding the random features the class can be predicted usign the 
+\emph on
+predict
+\emph default
+ method of the classifier.
+ The predicted labels can be reshaped, so that the new mask can be printed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# load model 
+\end_layout
+
+\begin_layout Plain Layout
+
+import pickle 
+\end_layout
+
+\begin_layout Plain Layout
+
+with open("SVMClassifier.pkl","r") as f:
+\end_layout
+
+\begin_layout Plain Layout
+
+    linearSVM = pickle.load(f)     
+\end_layout
+
+\begin_layout Plain Layout
+
+# load hand labeled mask 
+\end_layout
+
+\begin_layout Plain Layout
+
+mask = imread("../classification/data/segmentation/masks/MSA_03-2009_dXXXX-XX-XX_s
+0200.tif")
+\end_layout
+
+\begin_layout Plain Layout
+
+labels = linearSVM.predict(X_test_features) 
+\end_layout
+
+\begin_layout Plain Layout
+
+labels = labels.reshape(mask.shape)
+\end_layout
+
+\begin_layout Plain Layout
+
+%matplotlib inline 
+\end_layout
+
+\begin_layout Plain Layout
+
+imshow(labels)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the data is also labeled by hand, the quality of the model can be measured.
+ The following function calculates the accuracy as well as the f-score.
+ It also returns the confusion matrix.
+ 
+\end_layout
+
+\begin_layout Standard
+Because the classified data is an image, the confusion matrix is visualized
+ as an image.
+ All true positives are colored white and all true negatives black.
+ With 100% accuracy this would result in the hand labeled mask.
+ Since this is most often not the case, all false positives are marked red
+ and all false negatives blue.
+ 
+\end_layout
+
+\begin_layout Standard
+This gives a good first impression on the quality of the classifier.
+ If the predicted labels are post processed by hand, it furthermore gives
+ an indication which regions cause problems.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from sklearn.metrics import confusion_matrix,f1_score,accuracy_score 
+\end_layout
+
+\begin_layout Plain Layout
+
+from collections import namedtuple
+\end_layout
+
+\begin_layout Plain Layout
+
+AccuracyMetrics = namedtuple('AccuracyMetrics',['accuracy','fscore','confusion_m
+atrix','image'])
+\end_layout
+
+\begin_layout Plain Layout
+
+def compare_to_mask(pred,mask):
+\end_layout
+
+\begin_layout Plain Layout
+
+    size = pred.shape
+\end_layout
+
+\begin_layout Plain Layout
+
+	img = np.zeros((mask.shape[0],mask.shape[1],3),dtype='uint8')
+\end_layout
+
+\begin_layout Plain Layout
+
+    tp = np.dstack(((pred>0).reshape(size),(mask>0).reshape(size)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    fp = np.dstack(((pred>0).reshape(size),(mask==0).reshape(size)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    fn = np.dstack(((pred==0).reshape(size),(mask>0).reshape(size)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    img[np.all(tp,axis=2),:] = 255
+\end_layout
+
+\begin_layout Plain Layout
+
+    img[np.all(fp,axis=2),0] = 255
+\end_layout
+
+\begin_layout Plain Layout
+
+    img[np.all(fn,axis=2),2] = 255
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    acc = accuracy_score(mask.flatten(),pred.flatten(),normalize=True)
+\end_layout
+
+\begin_layout Plain Layout
+
+    fscore = f1_score(mask.flatten(),pred.flatten())
+\end_layout
+
+\begin_layout Plain Layout
+
+    cm = confusion_matrix(mask.flatten(),pred.flatten())
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    return AccuracyMetrics(acc,fscore,cm,img)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+metrics = compare_to_mask(labels,y_test.reshape(labels.shape)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+imshow(metrics[3])
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
