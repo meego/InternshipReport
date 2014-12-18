@@ -13,7 +13,7 @@
 
   \usepackage{courier}
   \lstset{
-  	basicstyle=\footnotesize\ttfamily, % Standardschrift
+  	basicstyle=\scriptsize\ttfamily, % Standardschrift
   	%numbers=left,               % Ort der Zeilennummern
   	numberstyle=\tiny,          % Stil der Zeilennummern
   	%stepnumber=2,               % Abstand zwischen den Zeilennummern
@@ -27,7 +27,7 @@
   	%        keywordstyle=[2]\textbf,    %
   	%        keywordstyle=[3]\textbf,    %
   	%        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
-  	stringstyle=\color{white}\ttfamily, % Farbe der String
+  	stringstyle=\color{blue}\ttfamily, % Farbe der String
   	showspaces=false,           % Leerzeichen anzeigen ?
   	showtabs=false,             % Tabs anzeigen ?
   	xleftmargin=17pt,
@@ -44,7 +44,7 @@
   	%C++
   	%XML
   	%HTML
-  	Java
+  	Python
   }
   %\DeclareCaptionFont{blue}{\color{blue}} 
   

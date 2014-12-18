@@ -13,7 +13,7 @@
 
   \usepackage{courier}
   \lstset{
-  	basicstyle=\footnotesize\ttfamily, % Standardschrift
+  	basicstyle=\scriptsize\ttfamily, % Standardschrift
   	%numbers=left,               % Ort der Zeilennummern
   	numberstyle=\tiny,          % Stil der Zeilennummern
   	%stepnumber=2,               % Abstand zwischen den Zeilennummern
@@ -27,7 +27,7 @@
   	%        keywordstyle=[2]\textbf,    %
   	%        keywordstyle=[3]\textbf,    %
   	%        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
-  	stringstyle=\color{white}\ttfamily, % Farbe der String
+  	stringstyle=\color{blue}\ttfamily, % Farbe der String
   	showspaces=false,           % Leerzeichen anzeigen ?
   	showtabs=false,             % Tabs anzeigen ?
   	xleftmargin=17pt,
@@ -44,7 +44,7 @@
   	%C++
   	%XML
   	%HTML
-  	Java
+  	Python
   }
   %\DeclareCaptionFont{blue}{\color{blue}} 
   
@@ -1543,7 +1543,7 @@ At the beginning the client is set up, so that the engines can be accessed
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Client Setup},language=Python,numbers=left"
 inline false
 status open
 
@@ -1590,7 +1590,7 @@ The training data can be sampled.
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Generating samples},language=Python,numbers=left"
 inline false
 status open
 
@@ -1668,7 +1668,7 @@ Because callables are passed, the user can add any new function.
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Converting and Adding Features},language=Python,numbers=left,showstringspaces=false"
 inline false
 status open
 
@@ -1778,7 +1778,11 @@ dview['out_dir'] = out_dir
 
 cmd = 'dc.convert_and_save(images,masks,out_dir,new_features=[partial(fe.calc_std,
 size=16),partial(fe.findSegmentation,p=0.2)],online_features=[fe.add_hsv])'
- dview.execute(cmd)
+\end_layout
+
+\begin_layout Plain Layout
+
+dview.execute(cmd)
 \end_layout
 
 \end_inset
@@ -1800,7 +1804,7 @@ combine_files
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Create training and testing sets},language=Python,numbers=left"
 inline false
 status open
 
@@ -1862,7 +1866,7 @@ At the end the classifier is trained with parameters optimized with a grid
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Build a SVM classifier},language=Python,numbers=left"
 inline false
 status open
 
@@ -2016,7 +2020,7 @@ predict
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Classify test image},language=Python,numbers=left"
 inline false
 status open
 
@@ -2077,6 +2081,45 @@ imshow(labels)
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/FullRun_17_0.png
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 If the data is also labeled by hand, the quality of the model can be measured.
  The following function calculates the accuracy as well as the f-score.
  It also returns the confusion matrix.
@@ -2101,8 +2144,15 @@ This gives a good first impression on the quality of the classifier.
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,language=Python,numbers=left"
+lstparams "breaklines=true,caption=Evaluation,language=Python,numbers=left"
 inline false
 status open
 
@@ -2207,6 +2257,45 @@ metrics = compare_to_mask(labels,y_test.reshape(labels.shape))
 \begin_layout Plain Layout
 
 imshow(metrics[3])
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/FullRun_19_0.png
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
