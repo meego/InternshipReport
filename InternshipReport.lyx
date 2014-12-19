@@ -54,6 +54,15 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\hypersetup{
+colorlinks=true,
+filecolor =magenta,
+urlcolor=magenta,
+linkcolor=black,
+citecolor=black,
+runcolor=magenta	
+}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -178,6 +187,16 @@ filename "brain_analytics.lyx"
 \begin_inset CommandInset include
 LatexCommand include
 filename "approach.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "learnvstwister.lyx"
 
 \end_inset
 

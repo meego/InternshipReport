@@ -54,6 +54,15 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\hypersetup{
+colorlinks=true,
+filecolor =magenta,
+urlcolor=magenta,
+linkcolor=black,
+citecolor=black,
+runcolor=magenta	
+}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -912,174 +921,6 @@ begin{figure}
 
 
 \backslash
-begin{tabular}{|l|r|r|r|}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-Classifier 	& Accuracy & training time in s & test time in s 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-SVC (sklearn), rbf, 20k instances 	& 0.8752580408 	& 39.545465 	& 109.808209
- 	
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-parbox[t]{6cm}{SVC (sklearn), rbf,
-\backslash
-
-\backslash
- gamma=0.1, C=1, 20k instances} 	& 0.9579808675 	& 45.242423 	& 66.846724 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-libSVM twister, 20k instances 	& 0.9592930497 	& 445.867 	& - 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-libSVM twister, 40k instances 	& 0.963317509 	& 934.912 	& - 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 	
-\end_layout
-
-\begin_layout Plain Layout
-
-libSVM twister, 100k instances 	& 0.9665214475 	& 3077.239 	& -
-\backslash
-
-\backslash
- 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tabular}  
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{SVMs from scikit-learn and Twister with rgb as features } 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{svm_table} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{figure}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
 begin{tabular}{|l|r|r|r|} 	
 \end_layout
 
@@ -1312,55 +1153,6 @@ key "NIPS2012_4588"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{figure} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-includegraphics[width=0.8
-\backslash
-linewidth]{graphics/sklearn_runtime} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{SVC training time with increasing sample} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{fig:sklearn_runtime} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -1487,6 +1279,9 @@ edView.
  the individual engines.
  Instead of that the IPython scheduler assigns the tasks to the engines
  minimizing the idle time of the engines.
+ Because of this the grid search can not only be used on a single machine
+ but on clusters, if the IPython cluster is setup.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1509,21 +1304,49 @@ compare_to_mask
  function.
  The latter calculates the accuracy, f-score and the confusion matrix.
  Furthermore it also visualizes the confusion matrix as an image.
+ An example of this image is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Confusion-matrix-visualized"
+
+\end_inset
+
+.
  
-\begin_inset Note Note
+\end_layout
+
+\begin_layout Subsection
+Deployment
+\end_layout
+
+\begin_layout Standard
+In this section the deployment is described as a IPython notebook.
+ It contains the complete workflow from data preprocessing to model evaluation
+ as well as some explanations and comments.
+ This allows a scientist to easily change and use the functions he needs.
+ 
+\end_layout
+
+\begin_layout Standard
+The following part can also be watched as a html 
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-TODO implement function and include an image
+
+
+\backslash
+href{run:./FullRun.html}{file}
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Subsection
-Deployement
+ or opened using the 
+\emph on
+ipython notebook FullRun.ipynb
+\emph default
+ command.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1662,8 +1485,11 @@ The window size for the image is 16x16 pixel.
 \begin_layout Standard
 Because callables are passed, the user can add any new function.
  The only condition is that the first argument is the image/pixel.
- If the function has more arguments, the *partial* function can be used
- to create a new one with only one argument.
+ If the function has more arguments, the 
+\emph on
+partial
+\emph default
+ function can be used to create a new one with only one argument.
 \end_layout
 
 \begin_layout Standard
@@ -2102,7 +1928,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
+predicted mask
 \end_layout
 
 \end_inset
@@ -2141,13 +1967,6 @@ This gives a good first impression on the quality of the classifier.
  If the predicted labels are post processed by hand, it furthermore gives
  an indication which regions cause problems.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace vfill
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -2286,6 +2105,13 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+Confusion matrix visualized
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Confusion-matrix-visualized"
+
+\end_inset
+
 
 \end_layout
 

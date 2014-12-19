@@ -54,6 +54,15 @@
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\hypersetup{
+colorlinks=true,
+filecolor =magenta,
+urlcolor=magenta,
+linkcolor=black,
+citecolor=black,
+runcolor=magenta	
+}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -246,7 +255,7 @@ During the internship for this group the goal is to build classification
  Support Vector Machines are the focused method, but other methods are considere
 d as well.
  This report shows the different problems and their solutions of several
- approaches and implementations.
+ approaches and implementations while focusing on the scikit-learn module.
  
 \end_layout
 
