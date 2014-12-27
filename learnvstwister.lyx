@@ -141,7 +141,44 @@ Scikit-Learn vs.
 \end_layout
 
 \begin_layout Standard
-Todo Twister, cascade svm erklären, scikit und twister vergleichen.
+Both scikit-learn and the twister svm are based on the libsvm libary.
+ Twister is a map/reduce runtime that enables iterative map/reduce models.
+ The svm version for twister is based on the cascade svm approach.
+ The training data is splitted into several sets and a svm is built for
+ every subset.
+ The support vectors of the models are used to create a new svm model.
+ If there is only one model left, the first iteration is finished.
+ The support vectors of the last model are added to the subsets and the
+ iteration step is repeated.
+ This is done until the change of the final support vectors is less than
+ a given threshold.
+ 
+\end_layout
+
+\begin_layout Standard
+To test the runtime of the two implementations, classifiers were built for
+ training data of different size.
+ Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "svm_table"
+
+\end_inset
+
+ shows the results for 
+\begin_inset Formula $20.000$
+\end_inset
+
+, 
+\begin_inset Formula $40.000$
+\end_inset
+
+ and 
+\begin_inset Formula $100.000$
+\end_inset
+
+ instances.
+ It can be seen that scikit-learn is faster.
 \end_layout
 
 \begin_layout Standard
@@ -310,6 +347,24 @@ end{figure}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sklearn_runtime"
+
+\end_inset
+
+ shows the accuracy and training time with an increasing data set.
+ The improvement of accuracy is low compared to the addiational runtime
+ that is needed.
+ Therefore, it is more reasonable to add additional features to the data
+ set, that improve the accuracy instead of increasing the number of instances.
+ The training time of a SVM classifier is much more dependent on the number
+ of instances than it is on the number of features.
+ 
 \end_layout
 
 \begin_layout Standard
