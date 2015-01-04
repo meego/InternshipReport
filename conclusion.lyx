@@ -139,5 +139,49 @@ tabs-within-sections
 Conclusion
 \end_layout
 
+\begin_layout Standard
+The intention of this internship was to create a classifier for a given
+ problem.
+ It has to predict wether a pixel belongs to a cross section of a human
+ brain or not.
+ For this several problems had to be solved.
+\end_layout
+
+\begin_layout Standard
+Because of the huge amount of data the preprocessing had to be done in parallel
+ on a super computer.
+ For this IPython was configured so that it is able to be started with the
+ scheduler and create several engines.
+ While IPython supports MPI, which is the most used framework on the super
+ computers in Jülich, it is also possible to access the engines using the
+ DirectView or LoadBalancedView classes of IPython.
+ 
+\end_layout
+
+\begin_layout Standard
+After that several features known from image segmentation were implemented
+ and added to the data.
+ This contains pixel based features and local features.
+\end_layout
+
+\begin_layout Standard
+While Support Vector Machines were the focused method for classification
+ during this intership some other popular approaches were used as well.
+ The one with the best result is the Random Forest method, which is based
+ on several randomized Decision Trees that are used for majority voting.
+ Both Support Vector Machines and Random Forests can handle feature dependency
+ and do not overfit as easily as other classifiers.
+ A negative example would be Naive Bayes which despite its good training
+ speed has a bad accuracy because it supposes feature indepency.
+ 
+\end_layout
+
+\begin_layout Standard
+After optimizing the model with grid search, it is able to help the scientist
+ by predicting a approximated cross section which can be corrected by hand.
+ It can be easily used with the given IPython notebook.
+ 
+\end_layout
+
 \end_body
 \end_document

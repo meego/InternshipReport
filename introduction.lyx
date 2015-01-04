@@ -156,7 +156,7 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The Research Centre Jülich researches key technologies for the 21st century.
+The Research Centre Jülich investigates key technologies for the 21st century.
  Different tools are needed for all kinds of experiments.
  Because these tools are often very specialized, the Research Centre has
  to develop them itself.
@@ -250,7 +250,7 @@ end{enumerate}
 \end_layout
 
 \begin_layout Standard
-During the internship for this group the goal is to build classification
+During the internship for this group the intention is to build classification
  models for data sets that show problems of 'big data' .
  Support Vector Machines are the focused method, but other methods are considere
 d as well.

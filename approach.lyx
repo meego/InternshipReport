@@ -1320,7 +1320,7 @@ Deployment
 \end_layout
 
 \begin_layout Standard
-In this section the deployment is described as a IPython notebook.
+In this section the deployment is described as an IPython notebook.
  It contains the complete workflow from data preprocessing to model evaluation
  as well as some explanations and comments.
  This allows a scientist to easily change and use the functions he needs.
@@ -1836,7 +1836,7 @@ import pickle with open("SVMClassifier.pkl","w") as f:
 \begin_layout Standard
 If the classifier is not trained in the current session, it can be loaded
  with the pickle module.
- After adding the random features the class can be predicted usign the 
+ After adding the random features the class can be predicted using the 
 \emph on
 predict
 \emph default

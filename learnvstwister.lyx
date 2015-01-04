@@ -179,6 +179,13 @@ reference "svm_table"
 
  instances.
  It can be seen that scikit-learn is faster.
+ This is due to the overhead caused by the message passing and setting up
+ the different jobs.
+ With an increasing training set the twister svm implementation promises
+ to become faster than the serial one.
+ Unfortunately, it was not possible to run more tests with larger training
+ sets, because the twister implementations is still quite unstable.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -189,7 +196,7 @@ status open
 
 
 \backslash
-begin{figure}
+begin{figure}[h]
 \end_layout
 
 \begin_layout Plain Layout
@@ -360,11 +367,12 @@ reference "fig:sklearn_runtime"
  shows the accuracy and training time with an increasing data set.
  The improvement of accuracy is low compared to the addiational runtime
  that is needed.
+ Additional samples do not seem to improve the accuracy much.
  Therefore, it is more reasonable to add additional features to the data
  set, that improve the accuracy instead of increasing the number of instances.
  The training time of a SVM classifier is much more dependent on the number
- of instances than it is on the number of features.
- 
+ of instances than it is on the number of features, so that the training
+ time can be reduced by using a small sample of the data with added features.
 \end_layout
 
 \begin_layout Standard
@@ -375,7 +383,7 @@ status open
 
 
 \backslash
-begin{figure} 
+begin{figure}[h]
 \end_layout
 
 \begin_layout Plain Layout
