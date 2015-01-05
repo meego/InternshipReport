@@ -178,9 +178,24 @@ While Support Vector Machines were the focused method for classification
 
 \begin_layout Standard
 After optimizing the model with grid search, it is able to help the scientist
- by predicting a approximated cross section which can be corrected by hand.
+ by predicting an approximated cross section which can be corrected by hand.
  It can be easily used with the given IPython notebook.
  
+\end_layout
+
+\begin_layout Standard
+While the notebook is based on scikit-learn and therefore a serial SVM implement
+ation, a parallel approach was covered by testing the twister svm implementation.
+ Although the cascade svm promises to increase the training time, this was
+ not the case for this internship.
+ This may have two reasons.
+ For once the used data sets are not large enough to show the advantages
+ of a cascade svm.
+ The second reason is that the twister implementation as well as the SVM
+ implementation for twister are still under developement and more proof
+ of concept than userfriendly and optimized versions.
+ Because of this it was also not possible to test it on a larger training
+ set.
 \end_layout
 
 \end_body
