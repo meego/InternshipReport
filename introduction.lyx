@@ -158,19 +158,20 @@ Introduction
 \begin_layout Standard
 The Research Centre Jülich investigates key technologies for the 21st century.
  Different tools are needed for all kinds of experiments.
- Because these tools are often very specialized, the Research Centre has
- to develop them itself.
- Apart from the experiment related software, there are many simulation and
- data problems that have to be solved.
+ Because these tools are often very specialized, the Research Centre often
+ develops them itself.
+ Apart from the experiment related software, there are many computational
+ simulation and data problems that have to be solved.
  
 \end_layout
 
 \begin_layout Standard
-The Jülich Super Computing Centre (JSC) provides the ressources for these
+The Jülich Super Computing Centre (JSC) provides the resources for these
  computations.
- This includes the hardware needed for a fast calculation.
- The JSC has several high performance clusters that can be used for computation
- 
+ Such as the supercomputing capacity and capability needed for a fast calculatio
+n.
+ The JSC has several high performance clusters that can be used for compute-
+ and/or data-intensive problems 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "jsc"
@@ -178,8 +179,8 @@ key "jsc"
 \end_inset
 
 .
- Besides hardware the institute raises different software solutions for
- parallel computing.
+ Besides hardware the institute investigates, explores and develops different
+ software solutions for parallel computing.
  
 \end_layout
 
@@ -193,18 +194,19 @@ Federated Systems and Data
 \end_inset
 
  (FSD) of the Jülich Super Computing Centre provides access to distributed
- resources like HPC systems and data.
+ systems that consist on a wide variety of different resources (e.g.
+ HPC system, parallel filesystem environments, HTC resources, or clouds).
  This is done by implementing open standards and simplifying usage and administr
 ation of these services.
- Therefor the department is one of the core development partners of the
- UNICORE Grid middleware and has members in the Research Data Alliance and
- the Open Grid Forum.
+ Furthermore the division provides in particular, middleware services, simple
+ upload / download services, replication services, or data management know-how
+ in general.
 \end_layout
 
 \begin_layout Standard
-The research group High Productivity Data Processing works on solutions
- to overcome problems and challenges occurring while handling 'big data'
- problems.
+The research group on High Productivity Data Processing works on solutions
+ to overcome problems and challenges of applications that specifically require
+ big data analytics solutions.
  This can be splitted into three categories.
  
 \end_layout
@@ -218,23 +220,41 @@ status open
 
 \backslash
 begin{enumerate} 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 item{
 \backslash
 textbf{Investigate Generic Data Methods:}} How to overcome limitations of
  processing and analyzing large amounts of data ( e.g.
  in-memory databases, data privacy methods and query processing) 	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 item{
 \backslash
-textbf{Machine Learning:}} Use and extend serial or parallel machine learning
- techniques, like classification and clustering, to improve performance
+textbf{Machine Learning:}} Explore, develop and tune serial or parallel
+ machine learning techniques, like classification and clustering, to enable
+ solutions that work with large quantities of scientific data or high dimensiona
+l datasets.
  	
+\end_layout
+
+\begin_layout Plain Layout
+
+
 \backslash
 item{
 \backslash
-textbf{Smart Data Analytics Applications:}} Find and develop suitable applicatio
-ns for general data analysis 
+textbf{Smart Data Analytics Applications:}} Find and develop solutions that
+ are specifically applicable in real-world applications for general data
+ analysisand statistical data analysis 
 \end_layout
 
 \begin_layout Plain Layout
@@ -250,13 +270,35 @@ end{enumerate}
 \end_layout
 
 \begin_layout Standard
-During the internship for this group the intention is to build classification
- models for data sets that show problems of 'big data' .
- Support Vector Machines are the focused method, but other methods are considere
-d as well.
- This report shows the different problems and their solutions of several
- approaches and implementations while focusing on the scikit-learn module.
+During the internship in this group the intention is to analyse, evaluate
+ and build classification models for data sets that show problems when working
+ with 'big data' .
+ As one of the best out-of-the-box solutions preferred by application domain
+ scientists, Support Vector Machines are the focused method, but other methods
+ are considered as well.
+ This report highlights selected different problems and their solutions
+ based on several approaches and implementations by taking advantage of
+ the scikit-learn module.
  
+\end_layout
+
+\begin_layout Standard
+After the Introduction, this report will provide the necessary background
+ in Section 2, while Section 3 highlights one application domain that represents
+ the origin of the datasets analysed.
+ In Section 4 the process of developing a classification model is described
+ and Section 5 finished the report with a summary and a conclusion.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Todo Struktur updaten
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

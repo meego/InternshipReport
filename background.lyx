@@ -140,14 +140,29 @@ Background
 \end_layout
 
 \begin_layout Standard
-The primary programming language used during this internship is python.
- Python is a dynamic scripting language and provides many nice modules for
- scientific use cases like numpy and scipy.
+Given the tremendous uptake of python in scientific working environments,
+ the primary programming language used during this internship is python.
+ It is a dynamic scripting language and provides many nice modules for scientifi
+c use cases like numpy 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "numpy"
+
+\end_inset
+
+ and scipy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "scipy"
+
+\end_inset
+
+.
  There are also some machine learning modules and the scikit-learn module
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "sklearn"
+key "scikit-learn"
 
 \end_inset
 
