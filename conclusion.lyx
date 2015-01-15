@@ -141,7 +141,7 @@ Conclusion
 
 \begin_layout Standard
 The intention of this internship was to create a classifier for a given
- problem.
+ real-world application domain problem.
  It has to predict wether a pixel belongs to a cross section of a human
  brain or not.
  For this several problems had to be solved.
@@ -159,16 +159,17 @@ Because of the huge amount of data the preprocessing had to be done in parallel
 \end_layout
 
 \begin_layout Standard
-After that several features known from image segmentation were implemented
- and added to the data.
- This contains pixel based features and local features.
+After that feature extraction methods habe been applied taking related work
+ from image segmentation methods into account.
+ This contains pixel based features and local neighbours.
 \end_layout
 
 \begin_layout Standard
 While Support Vector Machines were the focused method for classification
  during this intership some other popular approaches were used as well.
- The one with the best result is the Random Forest method, which is based
- on several randomized Decision Trees that are used for majority voting.
+ The one with the best result is the Random Forest method, which is an ensemble
+ method based on several randomized Decision Trees that are used for majority
+ voting.
  Both Support Vector Machines and Random Forests can handle feature dependency
  and do not overfit as easily as other classifiers.
  A negative example would be Naive Bayes which despite its good training
@@ -187,13 +188,16 @@ After optimizing the model with grid search, it is able to help the scientist
 While the notebook is based on scikit-learn and therefore a serial SVM implement
 ation, a parallel approach was covered by testing the twister svm implementation.
  Although the cascade svm promises to increase the training time, this was
- not the case for this internship.
- This may have two reasons.
- For once the used data sets are not large enough to show the advantages
- of a cascade svm.
+ not the case for the particular dataset used in the internship.
+ Brain data is expected with new scanners with order of magnitude of better
+ resolutions (i.e.
+ bigger data) and as such this internship was a good proof-of-concept of
+ evaluating different options.
+ The used data sets are not large enough to show the advantages of a cascade
+ svm.
  The second reason is that the twister implementation as well as the SVM
- implementation for twister are still under developement and more proof
- of concept than userfriendly and optimized versions.
+ implementation for twister are still a matter of ongoing research and not
+ particularly userfriendly and optimized versions need to be developed.
  Because of this it was also not possible to test it on a larger training
  set.
 \end_layout

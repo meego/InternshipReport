@@ -136,16 +136,33 @@ tabs-within-sections
 \begin_body
 
 \begin_layout Section
-Human Brain Project - brain analytics
+Human Brain Project - brain analytics case study
 \end_layout
 
 \begin_layout Standard
-Simulating the human brain to get a better understanding of it, that is
- the intention of the human brain project.
- Scientists from many countries create a infrastructure to link brain research
+Simulating the human brain in order to get a better understanding of it,
+ is the intention of the human brain project 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hbp"
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+better cite
+\end_layout
+
+\end_inset
+
+.
+ Scientists from many countries create an infrastructure to link brain research
  and information technology.
  The project unites neuro and computer scientists as well as mathematicians,
- physicists and medics.
+ physicists and medical experts as well as scientists all over Europe.
  
 \end_layout
 
@@ -158,16 +175,18 @@ The Research Centre Jülich researches basics about structure and functioning
 \end_layout
 
 \begin_layout Standard
-One sub task of this project is to build a 3d model of the human brain.
+One sub task of this project is to build a 3D model of the human brain.
  The brain analytics data set created by the institute of neuroscience and
  medicine (INM) provides images of different cross sections of a brain.
- The cross section of one brain were labeled, so that each pixel either
- belongs to the cross section or not.
- Labeling a whole brain takes a huge amount of time and resources.
+ The cross sections of one brain were manually labelled in a time-consuming
+ process, so that each pixel either belongs to the cross section or not.
+ Labeling a whole brain takes a huge amount of time and resources and as
+ such an automation process that supports this process is one of the research
+ goals of this case study.
  So instead of labeling new images by hand, this data is used to build a
  model that automatically classifies a pixel.
- If this classification is good enough, the predicted 2d brain parts should
- be used to rebuild a 3d model of a human brain.
+ If this classification is good enough, the predicted 2D brain parts should
+ be used to rebuild a 3D model of a human brain.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -232,10 +251,13 @@ end{figure}
 \end_layout
 
 \begin_layout Standard
-If the simulation of the human brain is successfull, it can be used by medics
- to better understand healthy and deseased brains and to create new drugs.
+The reconstructed 3D brain and its related research contributes to the understan
+ding of creating computational simulations of the human brain, it can be
+ used by medical scientists to better understand healthy and deseased brains
+ and to create new drugs.
  But it can also support the development of high performance computers which
- are also energy efficient.
+ are also energy efficient, whereby the modelling is inspired from the human
+ brain.
 \end_layout
 
 \end_body
