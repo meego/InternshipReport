@@ -71,7 +71,7 @@ figs-within-sections
 tabs-within-sections
 \end_modules
 \maintain_unincluded_children false
-\language british
+\language american
 \language_package babel
 \inputencoding latin9
 \fontencoding global
@@ -152,11 +152,11 @@ pagenumbering{roman}
 \end_layout
 
 \begin_layout Title
-Internship Report
+Classification of a human brain using Support Vector Machines
 \end_layout
 
 \begin_layout Subtitle
-Classification of a human brain using Support Vector Machines
+Internship Report
 \end_layout
 
 \begin_layout Author

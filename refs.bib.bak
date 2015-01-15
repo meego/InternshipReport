@@ -151,6 +151,12 @@
   url = {http://papers.nips.cc/paper/4588-nystrom-method-vs-random-fourier-features-a-theoretical-and-empirical-comparison.pdf}
 }
 
+@MISC{hbp,
+  howpublished = {\url{https://www.humanbrainproject.eu/de/home}},
+  owner = {Philipp},
+  timestamp = {2015.01.14}
+}
+
 @MISC{ipython_doc,
   howpublished = {\url{http://ipython.org/documentation.html}},
   note = {[PLACEHOLDEROnline; accessed 20-January-2015]},

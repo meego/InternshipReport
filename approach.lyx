@@ -136,16 +136,34 @@ tabs-within-sections
 \begin_body
 
 \begin_layout Section
-Approach
-\end_layout
-
-\begin_layout Subsection
-The Data
+Scientific Data Analysis
 \end_layout
 
 \begin_layout Standard
-The data is not given as a classic table and therefore not directly useable
- for classification.
+This section starts by giving an overview over the used scientific dataset
+ in 4.1 and the data preparation described in 4.2.
+ This includes sampling and feature extraction.
+ This is followed by the Data Modelling in 4.3 and the Evaluation in 4.4.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Fertig machen
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Scientific Dataset
+\end_layout
+
+\begin_layout Standard
+The data is not given as a table with numeric values and is an image-based
+ dataset and therefore not directly useable for classification.
  It consists of two sets of images.
  The first one contains the original images of each cross section as RGB
  images (fig.
@@ -157,7 +175,8 @@ reference "fig:original603"
 \end_inset
 
 ).
- The second one has the masks (fig.
+ The second type is a mask for each of the different RGB images thus providing
+ labelled data (fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -172,7 +191,7 @@ reference "fig:mask603"
 \begin_inset Formula $762$
 \end_inset
 
- images with a resolution of 
+ images (and additional 762 mask images) with a resolution of 
 \begin_inset Formula $3272\times2469$
 \end_inset
 
@@ -180,51 +199,45 @@ reference "fig:mask603"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/mask200.png
+	width 60line%
+
+\end_inset
 
 
-\backslash
-begin{figure}	
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Mask of a cross section
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:mask603"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-centering 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-includegraphics[width=0.6
-\backslash
-linewidth]{graphics/mask200} 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{Mask of a cross section} 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{fig:mask603} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset
@@ -233,19 +246,20 @@ end{figure}
 \end_layout
 
 \begin_layout Standard
-As stated above there are two classes in total, so that the classification
- task is a binary one.
+As stated above there are two classes in total, so that the task is a binary
+ classification problem.
  Before a classifier can be trained, the images have to be converted into
  a attribute value format and saved in a file.
- This could be a simple csv file or any other format that can handle table
+ This could be a simple csv file or any other format that can handle numeric
  like data.
  In this case the libsvm format was chosen, because it is supported by many
  svm libraries, e.g.
  scikit-learn.
  Every row represents one instance, which is in this case one pixel and
  its features.
- Currently the only features available are the rgb values of a pixel from
- the original image and the class label from the mask.
+ Without applying any feature extraction method, the dataset has only the
+ rgb values of a pixel from the original image and the class label from
+ the mask.
  Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -298,7 +312,8 @@ Data Preparation
 \end_layout
 
 \begin_layout Standard
-In the first preprocessing step the libsvm data is created.
+In the first preprocessing step the image-based data is transformed into
+ the libsvm format.
  The easiest method saves for each pixel the rgb values and the class label.
  This is done for every image resulting in 
 \begin_inset Formula $762$
@@ -314,6 +329,8 @@ In the first preprocessing step the libsvm data is created.
 \end_inset
 
  pixels in total.
+ The data preparation process in itself is already a challenging task for
+ serial approaches and a time-consuming process.
  A first trivial approach took about 3 days to generate all attribute value
  files.
  The RGB values can be read directly from the original images.
@@ -341,20 +358,13 @@ r of the JSC with
 \end_inset
 
  graphic processors.
- The python script is started with a msub script reserving 
-\begin_inset Formula $1$
-\end_inset
-
- one core with 
-\begin_inset Formula $1$
-\end_inset
-
- node.
+ The python script is started with a msub job submission script reserving
+ one core with one node.
  To speed up the calculation time, the python script was changed so that
  it expects a range as parameters that says which image files it should
  convert.
- With this several jobs can be started with a different range argument resulting
- in a faster computation.
+ With this several independent jobs can be started with a different range
+ argument resulting in a faster computation due to paralellization.
 \end_layout
 
 \begin_layout Standard
@@ -434,6 +444,15 @@ Because of this later samples were made by resizing the images.
 
 \begin_layout Standard
 This yields a first sample with three features.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Datensätze benennen
+\end_layout
+
+\end_inset
+
  To improve the classifier the number of features has to be increased.
 \end_layout
 
@@ -442,13 +461,24 @@ HSV color space
 \end_layout
 
 \begin_layout Standard
-An easy method to increase the number of features is to use another color
- space in addition to the given RGB values.
+A feature extraction method is used in order to provide more meaningful
+ data to be used in learning the classifier.
+ To increase the number of features another color space in addition to the
+ given RGB values is used.
  In this case the HSV color space was chosen, because it is similiar to
  the human color vision.
- Furthermore it is used for object detection because methods used on grayscale
- images can easily be used on images in the HSV space by using them on each
- color component.
+ Furthermore it is used for object detection 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ref to other papers
+\end_layout
+
+\end_inset
+
+ because methods used on grayscale images can easily be used on images in
+ the HSV space by using them on each color component.
  
 \end_layout
 
@@ -522,10 +552,40 @@ V & = & Max
 
 \begin_layout Standard
 Since this computation can be done independently for every pixel, the features
- can easily be computed in parallel and be added to existing data.
+ can easily be computed in parallel and be added to existing data
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Datenset benennen
+\end_layout
+
+\end_inset
+
+.
  While computing the HSV values is simple, they also add only few additional
  information.
- Because of this the increase of accuracy is only marginal.
+ 
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+Because of this the increase of accuracy is only marginal.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Kommentar muss in Evaluation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -587,7 +647,19 @@ Local Features
 
 \begin_layout Standard
 Despite adding the HSV color space, there is still no information on the
- neighbourhood of a pixel.
+ neighbourhood of a pixel that in many cases brings enormous results in
+ classification accuracy of images (e.g.
+ land-cover classification of remote sensing images
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ref IGARSS2014 paper
+\end_layout
+
+\end_inset
+
+).
  A first level approach to get information on the neighbourhood of a pixel
  are statistical values like mean or standard deviation.
  The statistical values are calculated on an 
@@ -731,6 +803,16 @@ def calc_std(img,size,use_mean=False):
 By using the local standard deviation as a feature some first information
  of the neighbourhood is available.
  This can be further improved by other features.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Dataset benennen
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -738,7 +820,17 @@ Image Segmentation
 \end_layout
 
 \begin_layout Standard
-Watershed is an image segmentation algorithm that is used on grayscale images.
+Watershed 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Ref hinzufügen
+\end_layout
+
+\end_inset
+
+ is an image segmentation algorithm that is used on grayscale images.
  The gray level of a pixel is interpreted as its altitude and the image
  is seen as a ground.
  Water, that is filled into this ground from different markers, flows to
@@ -768,7 +860,31 @@ Support Vector Machines
 \end_layout
 
 \begin_layout Standard
+Support vector machines (SVMs) are one of the preferred classification methods
+ lately, because tools are widely available and it is one of the best out-of-the
+-box methods scientists can use that are not particularly trained in machine
+ learning algorithms.
+ They have a high accuracy, but their training time is quite long.
+ A model can easily be described by the found support vectors.
+ Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:svm"
+
+\end_inset
+
+ shows a basic visualization of an SVM.
+ On the left side a line is drawn that seperates both classes.
+ This is the decision boundary.
+ The right side is not linear separable.
+ A kernel is used to push the data into a higher dimensional space, so that
+ the classes are linear seperable in this space.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -789,7 +905,7 @@ status open
 
 \begin_layout Plain Layout
 Classification using Support Vector Machines.
- Linear expample on the left side.
+ Linear expample on the left side (support vectors have a black border).
  Non linear example on the right side.
 \begin_inset CommandInset label
 LatexCommand label
@@ -805,34 +921,9 @@ name "fig:svm"
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Support vector machines (SVMs) are one of the preferred classification methods
- lately.
- They have a high accuracy, but their training time is quite long.
- A model can easily be described by the found support vectors.
- Fig 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:svm"
-
-\end_inset
-
- shows a basic visualization of an SVM.
- On the left side a line is drawn that seperates both classes.
- This is the decision boundary.
- The right side is not linear separable.
- A kernel is used to push the data into a higher dimension, so that the
- classes are linear seperable again.
- 
 \end_layout
 
 \begin_layout Standard
@@ -903,7 +994,9 @@ Unlike other classification methods (e.g.
  neural networks, naive bayes) SVMs need only a small training set in theory.
  Additional instances only affect the classifier if they contain new support
  vectors.
- 
+ However depending on the chosen kernel cross-validation runs are necessary
+ to determine the parameter for the kernels (e.g.
+ rbf works with parameter gamma).
 \end_layout
 
 \begin_layout Standard
@@ -914,7 +1007,7 @@ status open
 
 
 \backslash
-begin{figure}
+begin{table}
 \end_layout
 
 \begin_layout Plain Layout
@@ -1036,7 +1129,7 @@ label{different_classifiers_table}
 
 
 \backslash
-end{figure}
+end{table}
 \end_layout
 
 \end_inset
@@ -1059,7 +1152,8 @@ key "Han2011"
 Because support vector machines maximize the margin between the decision
  boundary and the support vectors, they do not overfit as easily as other
  classifiers like decision trees for example.
- However, solving the quadratic problem can have a complexity between 
+ However, solving the quadratic programming problem can have a complexity
+ between 
 \begin_inset Formula $O(n^{2})$
 \end_inset
 
@@ -1101,6 +1195,9 @@ key "Rahimi"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "caption={kernel approximation using scikti learn},float,label={kernel approximation},language=Python"
 inline false
@@ -1149,10 +1246,26 @@ key "NIPS2012_4588"
 \end_inset
 
  shows the nyström method can achieve a better generalization in some cases.
- For the brain analytics use case however this could not be noted.
+ 
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+For the brain analytics use case however this could not be noted.
 \end_layout
 
-\begin_layout Standard
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Evaluation
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1166,8 +1279,9 @@ There are some other classifiers besides support vector machines.
  with other classifiers were tested too.
  Naive Bayes is one of them.
  Due to its simplicity it is quite fast.
- Unfortunatly the accuracy score is not good since Naive Bayes assumes independe
-ncy of features which is obiously not the cause for RGB values of an image.
+ Unfortunately the accuracy score is not good since Naive Bayes assumes
+ independency of features which is obiously not the cause for RGB values
+ of an image.
  
 \end_layout
 
@@ -1187,8 +1301,8 @@ reference "different_classifiers_table"
 \end_layout
 
 \begin_layout Standard
-Decision trees have a better accuracy than naive bayes as well but not as
- good as KNN.
+Decision trees without any pruning or ensemble methods have a better accuracy
+ than naive bayes as well but not as good as KNN.
  While their training time is larger than the one of naive bayes, it is
  way faster than KNN.
  For the random forest classifier, which uses ten randomized decision trees,
@@ -1209,13 +1323,14 @@ With only one model for all the different cross section the prediction is
  images are numbered.
  Naturally, for this to work future cross sections have to be numbered in
  the same way.
- The alternative to using the z position as a feature with one model is
- to divide the brain in several layers and create a model for every layer.
- 
+ The alternative to use the z position as a feature with one model is to
+ divide the brain in several layers and create a model for every layer.
+ This however could have impacts for the classification of future brains
+ that might differ in volume, orientation, and location of brain elements.
 \end_layout
 
 \begin_layout Standard
-This has several advantages in comparison to using one model.
+There are also advantages in comparison to using one model.
  By increasing the number of models each single model is simpler.
  It also decreases the training time.
  This has two reasons.
@@ -1227,12 +1342,44 @@ This has several advantages in comparison to using one model.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
 Using multiple models can also be useful if the color between the different
  layers varies slightly.
 \end_layout
 
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+RauS? Umformulieren: not sure this gives a lower generalization error when
+ considering new 5 human brains to classify...
+ seems "overfit" in a sense...
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Grid Search
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Tabelle mit parameter space
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1259,11 +1406,21 @@ While scikit-learn already implements a function that performs grid search
 \end_inset
 
  is set in the RBFSampler.
- Therefor the scikit-learn function can not be used and a modified version
+ Therefore the scikit-learn function can not be used and a modified version
  was implemented.
  The new version generates a new data set with the additional features and
  the current 
 \begin_inset Formula $\gamma$
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Which data set?
+\end_layout
+
 \end_inset
 
 .
@@ -1286,6 +1443,16 @@ edView.
 
 \begin_layout Subsection
 Data Post Processing
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Siehe Morris Kommentar
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1293,10 +1460,11 @@ After the model is created an image can be predicted.
  During the preprocessing the image is flattened and several features are
  added, so that every row contains one pixel.
  Since the order of the pixel is contained, the predicted labels can be
- reshaped to form a mask for the given image.
+ reshaped to form the outcome of the prediction as a mask for the given
+ image.
  This gives a much better impression of the performance of the model than
  the accuracy score because the data is not balanced.
- If the mask of the image is given, the predicted mask and the original
+ As the mask of the image is given, the predicted mask and the original
  mask can easily be compared by opening both masks or calling the 
 \emph on
 compare_to_mask
@@ -1315,12 +1483,64 @@ reference "fig:Confusion-matrix-visualized"
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/FullRun_19_0.png
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Confusion matrix visualized
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Confusion-matrix-visualized"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Deployment
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Subsections, siehe Morris
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-In this section the deployment is described as an IPython notebook.
+In this section the deployment is described as a so called IPython notebook.
  It contains the complete workflow from data preprocessing to model evaluation
  as well as some explanations and comments.
  This allows a scientist to easily change and use the functions he needs.
@@ -1466,7 +1686,7 @@ The following code block shows how to generate libsvm formated data from
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $R,G,B,std(R),std(G),std(B),segmentation_{b}it,H,S,V$
+\begin_inset Formula $R,G,B,std(R),std(G),std(B),segmentationbit,H,S,V$
 \end_inset
 
 
@@ -1970,6 +2190,20 @@ This gives a good first impression on the quality of the classifier.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+doesnt fit with the reading one expect evaluation on scikit-learn vs.
+ twister and runtimes and tables of accuracies..
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "breaklines=true,caption=Evaluation,language=Python,numbers=left"
 inline false
@@ -2003,7 +2237,7 @@ def compare_to_mask(pred,mask):
 
 \begin_layout Plain Layout
 
-	img = np.zeros((mask.shape[0],mask.shape[1],3),dtype='uint8')
+    img = np.zeros((mask.shape[0],mask.shape[1],3),dtype='uint8')
 \end_layout
 
 \begin_layout Plain Layout
@@ -2076,52 +2310,6 @@ metrics = compare_to_mask(labels,y_test.reshape(labels.shape))
 \begin_layout Plain Layout
 
 imshow(metrics[3])
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename graphics/FullRun_19_0.png
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Confusion matrix visualized
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Confusion-matrix-visualized"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset

@@ -198,51 +198,40 @@ reference "fig:original603"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/small_original603.png
+	width 60line%
+
+\end_inset
 
 
-\backslash
-begin{figure}[htb] 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+An image of a cross section of a human brain
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:original603"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-includegraphics[width=0.6
-\backslash
-linewidth]{graphics/small_original603} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{An image of a cross section of a human brain} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{fig:original603} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset

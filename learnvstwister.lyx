@@ -136,12 +136,21 @@ tabs-within-sections
 \begin_body
 
 \begin_layout Section
-Scikit-Learn vs.
- Twister
+Evaluations
 \end_layout
 
 \begin_layout Standard
-Both scikit-learn and the twister svm are based on the libsvm libary.
+Both scikit-learn and the twister svm 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+paper ref
+\end_layout
+
+\end_inset
+
+ are based on the libsvm libary.
  Twister is a map/reduce runtime that enables iterative map/reduce models.
  The svm version for twister is based on the cascade svm approach.
  The training data is splitted into several sets and a svm is built for
@@ -152,7 +161,7 @@ Both scikit-learn and the twister svm are based on the libsvm libary.
  iteration step is repeated.
  This is done until the change of the final support vectors is less than
  a given threshold.
- 
+ In other words vio iterations the not support vectors are filtered out.
 \end_layout
 
 \begin_layout Standard
@@ -184,7 +193,11 @@ reference "svm_table"
  With an increasing training set the twister svm implementation promises
  to become faster than the serial one.
  Unfortunately, it was not possible to run more tests with larger training
- sets, because the twister implementations is still quite unstable.
+ sets, because the twister implementations is still quite unstable due to
+ its many dependencies on a map-reduce runtime, a messaging system for the
+ iterative map-reduce technique and an on-top implementation of SVMs that
+ was never released as an official software package and is also rather a
+ matter of an ongoing research project.
  
 \end_layout
 
@@ -540,9 +553,15 @@ name "svm_table"
 \end_inset
 
 
-\end_layout
+\begin_inset Note Note
+status open
 
 \begin_layout Plain Layout
+Welches Datenset ? (A)
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -560,9 +579,9 @@ reference "fig:sklearn_runtime"
 \end_inset
 
  shows the accuracy and training time with an increasing data set.
- The improvement of accuracy is low compared to the addiational runtime
- that is needed.
- Additional samples do not seem to improve the accuracy much.
+ The improvement of accuracy is low compared to the additional runtime that
+ is needed.
+ Additional samples do not improve the accuracy much.
  Therefore, it is more reasonable to add additional features to the data
  set, that improve the accuracy instead of increasing the number of instances.
  The training time of a SVM classifier is much more dependent on the number
@@ -571,51 +590,44 @@ reference "fig:sklearn_runtime"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/sklearn_runtime.pdf
+	width 80line%
+
+\end_inset
 
 
-\backslash
-begin{figure}[h]
+\begin_inset Caption
+
+\begin_layout Plain Layout
+SVM training time with increasing sample
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sklearn_runtime"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-includegraphics[width=0.8
-\backslash
-linewidth]{graphics/sklearn_runtime} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{SVC training time with increasing sample} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{fig:sklearn_runtime} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
 \end_layout
 
 \end_inset
