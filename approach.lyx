@@ -649,13 +649,10 @@ Local Features
 Despite adding the HSV color space, there is still no information on the
  neighbourhood of a pixel that in many cases brings enormous results in
  classification accuracy of images (e.g.
- land-cover classification of remote sensing images
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ref IGARSS2014 paper
-\end_layout
+ land-cover classification of remote sensing images 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "remote"
 
 \end_inset
 
@@ -676,8 +673,7 @@ reference "calc_std"
 \end_inset
 
  shows how the standard deviation is calculated for an image.
- This is done with the numpy and scipy modules, which are optimized so that
- the calculation time is not too long.
+ This is done with the numpy and scipy modules, which are optimized.
  
 \end_layout
 
@@ -821,12 +817,9 @@ Image Segmentation
 
 \begin_layout Standard
 Watershed 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ref hinzufügen
-\end_layout
+\begin_inset CommandInset citation
+LatexCommand cite
+key "watershed"
 
 \end_inset
 

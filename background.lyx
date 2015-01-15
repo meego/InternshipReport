@@ -188,13 +188,10 @@ key "libsvm"
 \begin_layout Standard
 Some tasks are executed on a super computer at the Juelich Supercomputing
  Centre.
- It uses a Portable Batch System (PBS)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Cite
-\end_layout
+ It uses a Portable Batch System (PBS) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pbs"
 
 \end_inset
 

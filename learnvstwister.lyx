@@ -141,12 +141,9 @@ Evaluations
 
 \begin_layout Standard
 Both scikit-learn and the twister svm 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-paper ref
-\end_layout
+\begin_inset CommandInset citation
+LatexCommand cite
+key "twistersvm"
 
 \end_inset
 
@@ -587,10 +584,6 @@ reference "fig:sklearn_runtime"
  The training time of a SVM classifier is much more dependent on the number
  of instances than it is on the number of features, so that the training
  time can be reduced by using a small sample of the data with added features.
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Standard
