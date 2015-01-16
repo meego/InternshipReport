@@ -257,9 +257,9 @@ As stated above there are two classes in total, so that the task is a binary
  scikit-learn.
  Every row represents one instance, which is in this case one pixel and
  its features.
- Without applying any feature extraction method, the dataset has only the
- rgb values of a pixel from the original image and the class label from
- the mask.
+ Without applying any feature extraction method, the dataset (called A)
+ has only the rgb values of a pixel from the original image and the class
+ label from the mask.
  Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -443,16 +443,7 @@ Because of this later samples were made by resizing the images.
 \end_layout
 
 \begin_layout Standard
-This yields a first sample with three features.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Datensätze benennen
-\end_layout
-
-\end_inset
-
+This yields a first sample if dataset A.
  To improve the classifier the number of features has to be increased.
 \end_layout
 
@@ -468,12 +459,9 @@ A feature extraction method is used in order to provide more meaningful
  In this case the HSV color space was chosen, because it is similiar to
  the human color vision.
  Furthermore it is used for object detection 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Ref to other papers
-\end_layout
+\begin_inset CommandInset citation
+LatexCommand cite
+key "shadowsuppression"
 
 \end_inset
 
@@ -552,19 +540,10 @@ V & = & Max
 
 \begin_layout Standard
 Since this computation can be done independently for every pixel, the features
- can easily be computed in parallel and be added to existing data
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Datenset benennen
-\end_layout
-
-\end_inset
-
-.
+ can easily be computed in parallel and be added to existing data.
  While computing the HSV values is simple, they also add only few additional
  information.
+ Dataset B has HSV features additional to the RGB features.
  
 \begin_inset Note Greyedout
 status open
@@ -799,16 +778,6 @@ def calc_std(img,size,use_mean=False):
 By using the local standard deviation as a feature some first information
  of the neighbourhood is available.
  This can be further improved by other features.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Dataset benennen
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -842,6 +811,7 @@ The algorithm floods basins from markers, which were set by the user.
 \begin_layout Standard
 This yields a binary feature that is either one or zero and is used for
  training the classifier.
+ Dataset C has RGB,HSV, standard deviation of RGB and watershed as features.
 \end_layout
 
 \begin_layout Subsection
@@ -1335,7 +1305,7 @@ There are also advantages in comparison to using one model.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Greyedout
+\begin_inset Note Comment
 status open
 
 \begin_layout Plain Layout
@@ -1363,16 +1333,6 @@ RauS? Umformulieren: not sure this gives a lower generalization error when
 
 \begin_layout Subsubsection
 Grid Search
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Tabelle mit parameter space
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1401,19 +1361,9 @@ While scikit-learn already implements a function that performs grid search
  is set in the RBFSampler.
  Therefore the scikit-learn function can not be used and a modified version
  was implemented.
- The new version generates a new data set with the additional features and
- the current 
+ The new version generates a new data set C* with the additional features
+ and the current 
 \begin_inset Formula $\gamma$
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Which data set?
-\end_layout
-
 \end_inset
 
 .
@@ -1432,6 +1382,253 @@ edView.
  Because of this the grid search can not only be used on a single machine
  but on clusters, if the IPython cluster is setup.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.1,C=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.1,C=10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.1,C=100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.1,C=1000$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.25,C=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.25,C=10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.25,C=100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.25,C=1000$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.5,C=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.5,C=10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.5,C=100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=0.5,C=1000$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=1,C=1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=1,C=10$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=1,C=100$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $g=1,C=1000$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Parameter space for a grid search on set C 
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:gridsearch"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1520,16 +1717,6 @@ name "fig:Confusion-matrix-visualized"
 
 \begin_layout Subsection
 Deployment
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Subsections, siehe Morris
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1560,6 +1747,10 @@ ipython notebook FullRun.ipynb
 \emph default
  command.
  
+\end_layout
+
+\begin_layout Subsubsection
+Setup
 \end_layout
 
 \begin_layout Standard
@@ -1669,6 +1860,10 @@ resized_masks = [Image.open(m).resize(size) for m in images]
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Feature Extraction and Sampling
 \end_layout
 
 \begin_layout Standard
@@ -1875,6 +2070,10 @@ est_size=0.5,shuffle=True)
 
 \end_layout
 
+\begin_layout Subsubsection
+Creating a Model
+\end_layout
+
 \begin_layout Standard
 To build a classifier, first the training and test data have to be loaded.
  In this case it is a single cross section, but any combination of the different
@@ -2046,6 +2245,10 @@ import pickle with open("SVMClassifier.pkl","w") as f:
 
 \end_layout
 
+\begin_layout Subsubsection
+Predicting new Data
+\end_layout
+
 \begin_layout Standard
 If the classifier is not trained in the current session, it can be loaded
  with the pickle module.
@@ -2149,13 +2352,13 @@ predicted mask
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Postprocessing the results
 \end_layout
 
 \begin_layout Standard
@@ -2183,22 +2386,8 @@ This gives a good first impression on the quality of the classifier.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-doesnt fit with the reading one expect evaluation on scikit-learn vs.
- twister and runtimes and tables of accuracies..
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption=Evaluation,language=Python,numbers=left"
+lstparams "breaklines=true,caption=Postprocessing,language=Python,numbers=left"
 inline false
 status open
 
@@ -2280,10 +2469,6 @@ def compare_to_mask(pred,mask):
 \begin_layout Plain Layout
 
     cm = confusion_matrix(mask.flatten(),pred.flatten())
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout

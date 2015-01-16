@@ -537,7 +537,7 @@ libSVM twister, 100k instances
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Training time of scikit learn and twister libsvm
+Training time of scikit learn and twister libsvm on dataset A
 \begin_inset CommandInset label
 LatexCommand label
 name "svm_table"
@@ -545,16 +545,6 @@ name "svm_table"
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Welches Datenset ? (A)
 \end_layout
 
 \end_inset

@@ -184,6 +184,21 @@
   Url                      = {http://dx.doi.org/10.1109/MSST.2010.5496972}
 }
 
+@InProceedings{sun2012study,
+  Title                    = {Study on parallel SVM based on MapReduce},
+  Author                   = {Sun, Zhanquan and Fox, Geoffrey},
+  Booktitle                = {International Conference on Parallel and Distributed Processing Techniques and Applications},
+  Year                     = {2012},
+  Organization             = {Citeseer},
+  Pages                    = {16--19}
+}
+
+@Misc{shadowsuppression,
+  Title                    = {Shadow Suppression using RGB and HSV Color Space in Moving Object Detection},
+
+  Author                   = {Shailaja Surkutlawar and Prof Ramesh and K Kulkarni}
+}
+
 @Misc{numpy,
   Title                    = {The NumPy Array: A Structure for Efficient Numerical Computation},
 
