@@ -143,18 +143,9 @@ Scientific Data Analysis
 This section starts by giving an overview over the used scientific dataset
  in 4.1 and the data preparation described in 4.2.
  This includes sampling and feature extraction.
- This is followed by the Data Modelling in 4.3 and the Evaluation in 4.4.
+ This is followed by the Data Modelling in 4.3 and the Deployment with an
+ IPython notebook in 4.4.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Fertig machen
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -272,17 +263,30 @@ reference "libsvm"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\align center
+\begin_inset listings
+lstparams "float=h"
+inline false
 status open
 
 \begin_layout Plain Layout
+\align left
 
-
-\backslash
-begin{lstlisting}[caption=libsvm format,label=libsvm] 
-\end_layout
+\begin_inset Caption
 
 \begin_layout Plain Layout
+
+libsvm format
+\begin_inset CommandInset label
+LatexCommand label
+name "libsvm"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
 
 <class_label> <feature_id>:value ...
  <feature_id>:value
@@ -293,13 +297,6 @@ begin{lstlisting}[caption=libsvm format,label=libsvm]
 <class_label> <feature_id>:value ...
  <feature_id>:value ...
  
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{lstlisting} 
 \end_layout
 
 \end_inset
@@ -545,7 +542,7 @@ Since this computation can be done independently for every pixel, the features
  information.
  Dataset B has HSV features additional to the RGB features.
  
-\begin_inset Note Greyedout
+\begin_inset Note Comment
 status open
 
 \begin_layout Plain Layout
@@ -963,144 +960,6 @@ Unlike other classification methods (e.g.
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{table}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{tabular}{|l|r|r|r|} 	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-Classifier & Accuracy & training time in s & test time in s 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-GaussianNB & 0.9475908597 	& 0.042224 & 0.075098 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline
-\end_layout
-
-\begin_layout Plain Layout
-
-KNN & 0.9677196684 & 1.57 & 5.29
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline
-\end_layout
-
-\begin_layout Plain Layout
-
-Decision Tree & 0.9569552165 	& 0.563767 	& 0.057934 	
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline 
-\end_layout
-
-\begin_layout Plain Layout
-
-RandomForest  & 0.9637635858 	& 1.698716 	& 0.399092 
-\backslash
-
-\backslash
-  	
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-hline  
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{tabular}  
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{Different classifiers used with rgb features.} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{different_classifiers_table} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{table}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 More information on SVMs in general can be found at 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1210,7 +1069,7 @@ key "NIPS2012_4588"
 
  shows the nyström method can achieve a better generalization in some cases.
  
-\begin_inset Note Greyedout
+\begin_inset Note Comment
 status open
 
 \begin_layout Plain Layout
@@ -1270,6 +1129,327 @@ Decision trees without any pruning or ensemble methods have a better accuracy
  way faster than KNN.
  For the random forest classifier, which uses ten randomized decision trees,
  the accuracy as well as the training and testing time increase.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<column alignment="right" valignment="top" width="0">
+<column alignment="right" valignment="top" width="0">
+<column alignment="right" valignment="top" width="0">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Classifier
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Accuracy
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+training time in s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+test time in s
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Decision Tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.9569552165$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.563767$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.057934$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Random Forest
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.9637635858$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.698716$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.399092$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+KNN
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.9677196684$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.57$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5.29$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GaussianNB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.9475908597$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.042224$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.075098$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SVM
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0.9579808675$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $45.242423$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $66.846724$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Different classifiers used on Dataset A,
+\begin_inset Formula $0.1\%$
+\end_inset
+
+ sample.
+\begin_inset CommandInset label
+LatexCommand label
+name "different_classifiers_table"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1632,90 +1812,6 @@ name "tab:gridsearch"
 \end_layout
 
 \begin_layout Subsection
-Data Post Processing
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Siehe Morris Kommentar
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-After the model is created an image can be predicted.
- During the preprocessing the image is flattened and several features are
- added, so that every row contains one pixel.
- Since the order of the pixel is contained, the predicted labels can be
- reshaped to form the outcome of the prediction as a mask for the given
- image.
- This gives a much better impression of the performance of the model than
- the accuracy score because the data is not balanced.
- As the mask of the image is given, the predicted mask and the original
- mask can easily be compared by opening both masks or calling the 
-\emph on
-compare_to_mask
-\emph default
- function.
- The latter calculates the accuracy, f-score and the confusion matrix.
- Furthermore it also visualizes the confusion matrix as an image.
- An example of this image is shown in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Confusion-matrix-visualized"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename graphics/FullRun_19_0.png
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Confusion matrix visualized
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Confusion-matrix-visualized"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
 Deployment
 \end_layout
 
@@ -1770,7 +1866,7 @@ At the beginning the client is set up, so that the engines can be accessed
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Client Setup},language=Python,numbers=left"
+lstparams "breaklines=true,caption={Client Setup},float=h,language=Python,numbers=left"
 inline false
 status open
 
@@ -1817,7 +1913,7 @@ The training data can be sampled.
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Generating samples},language=Python,numbers=left"
+lstparams "breaklines=true,caption={Generating samples},float=h,language=Python,numbers=left"
 inline false
 status open
 
@@ -1902,7 +1998,7 @@ partial
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Converting and Adding Features},language=Python,numbers=left,showstringspaces=false"
+lstparams "breaklines=true,caption={Converting and Adding Features},float=h,language=Python,numbers=left,showstringspaces=false"
 inline false
 status open
 
@@ -2038,7 +2134,7 @@ combine_files
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Create training and testing sets},language=Python,numbers=left"
+lstparams "breaklines=true,caption={Create training and testing sets},float=h,language=Python,numbers=left"
 inline false
 status open
 
@@ -2104,7 +2200,7 @@ At the end the classifier is trained with parameters optimized with a grid
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Build a SVM classifier},language=Python,numbers=left"
+lstparams "breaklines=true,caption={Build a SVM classifier},float=h,language=Python,numbers=left"
 inline false
 status open
 
@@ -2262,7 +2358,7 @@ predict
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Classify test image},language=Python,numbers=left"
+lstparams "breaklines=true,caption={Classify test image},float=h,language=Python,numbers=left"
 inline false
 status open
 
@@ -2387,7 +2483,7 @@ This gives a good first impression on the quality of the classifier.
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption=Postprocessing,language=Python,numbers=left"
+lstparams "breaklines=true,caption=Postprocessing,float=h,language=Python,numbers=left"
 inline false
 status open
 
