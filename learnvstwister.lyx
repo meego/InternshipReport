@@ -144,25 +144,25 @@ Comparison between Scikit-Learn and Twister SVM
 \end_layout
 
 \begin_layout Standard
-Both scikit-learn and the twister svm 
+Both scikit-learn and the twister SVM 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "twistersvm"
 
 \end_inset
 
- are based on the libsvm libary.
+ are based on the libsvm library.
  Twister is a map/reduce runtime that enables iterative map/reduce models.
- The svm version for twister is based on the cascade svm approach.
- The training data is splitted into several sets and a svm is built for
- every subset.
- The support vectors of the models are used to create a new svm model.
+ The SVM version for twister is based on the cascade SVM approach.
+ The training data is split into several sets and a SVM is built for every
+ subset.
+ The support vectors of the models are used to create a new SVM model.
  If there is only one model left, the first iteration is finished.
  The support vectors of the last model are added to the subsets and the
  iteration step is repeated.
  This is done until the change of the final support vectors is less than
  a given threshold.
- In other words vio iterations the not support vectors are filtered out.
+ In other words via iterations the not support vectors are filtered out.
 \end_layout
 
 \begin_layout Standard
@@ -191,12 +191,12 @@ reference "svm_table"
  It can be seen that scikit-learn is faster.
  This is due to the overhead caused by the message passing and setting up
  the different jobs.
- With an increasing training set the twister svm implementation promises
+ With an increasing training set the twister SVM implementation promises
  to become faster than the serial one.
  Unfortunately, it was not possible to run more tests with larger training
  sets, because the twister implementations is still quite unstable due to
- its many dependencies on a map-reduce runtime, a messaging system for the
- iterative map-reduce technique and an on-top implementation of SVMs that
+ its many dependencies on a map/reduce runtime, a messaging system for the
+ iterative map/reduce technique and an on-top implementation of SVMs that
  was never released as an official software package and is also rather a
  matter of an ongoing research project.
  
@@ -541,7 +541,7 @@ libSVM twister, 100k instances
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Training time of scikit learn and twister libsvm on dataset A
+Training time of scikit-learn and twister libsvm on dataset A
 \begin_inset CommandInset label
 LatexCommand label
 name "svm_table"
@@ -978,14 +978,14 @@ Data Post Processing
 \end_layout
 
 \begin_layout Standard
-After the model is created an image can be predicted.
+After the model is created, an image can be predicted.
  During the preprocessing the image is flattened and several features are
  added, so that every row contains one pixel.
  Since the order of the pixel is contained, the predicted labels can be
  reshaped to form the outcome of the prediction as a mask for the given
  image.
- This gives a much better impression of the performance of the model than
- the accuracy score because the data is not balanced.
+ This gives a much better impression of the model's performance than the
+ accuracy score because the data is not balanced.
  As the mask of the image is given, the predicted mask and the original
  mask can easily be compared by opening both masks or calling the 
 \emph on
