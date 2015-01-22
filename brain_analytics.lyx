@@ -136,7 +136,7 @@ tabs-within-sections
 \begin_body
 
 \begin_layout Section
-Human Brain Project - brain analytics case study
+Human Brain Project - Brain Analytics Case Study
 \end_layout
 
 \begin_layout Standard
@@ -195,6 +195,8 @@ reference "fig:original603"
 \end_inset
 
  shows such a cross section.
+ The trained classifier then in turn can be applied to unseen new future
+ brain data images when they become available in the project.
 \end_layout
 
 \begin_layout Standard

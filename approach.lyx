@@ -141,10 +141,10 @@ Scientific Data Analysis
 
 \begin_layout Standard
 This section starts by giving an overview over the used scientific dataset
- in 4.1 and the data preparation described in 4.2.
+ in Section 4.1 and the data preparation described in Section 4.2.
  This includes sampling and feature extraction.
- This is followed by the Data Modelling in 4.3 and the Deployment with an
- IPython notebook in 4.4.
+ This is followed by the Data Modelling in Section 4.3 and the Deployment
+ with an IPython notebook in Section 4.4.
  
 \end_layout
 
@@ -157,8 +157,7 @@ The data is not given as a table with numeric values and is an image-based
  dataset and therefore not directly useable for classification.
  It consists of two sets of images.
  The first one contains the original images of each cross section as RGB
- images (fig.
- 
+ images (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:original603"
@@ -167,8 +166,7 @@ reference "fig:original603"
 
 ).
  The second type is a mask for each of the different RGB images thus providing
- labelled data (fig.
- 
+ labelled data (Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:mask603"
@@ -249,7 +247,7 @@ As stated above there are two classes in total, so that the task is a binary
  Every row represents one instance, which is in this case one pixel and
  its features.
  Without applying any feature extraction method, the dataset (called A)
- has only the rgb values of a pixel from the original image and the class
+ has only the RGB values of a pixel from the original image and the class
  label from the mask.
  Listing 
 \begin_inset CommandInset ref
@@ -275,7 +273,6 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 libsvm format
 \begin_inset CommandInset label
 LatexCommand label
@@ -311,7 +308,7 @@ Data Preparation
 \begin_layout Standard
 In the first preprocessing step the image-based data is transformed into
  the libsvm format.
- The easiest method saves for each pixel the rgb values and the class label.
+ The easiest method saves for each pixel the RGB values and the class label.
  This is done for every image resulting in 
 \begin_inset Formula $762$
 \end_inset
@@ -335,7 +332,7 @@ In the first preprocessing step the image-based data is transformed into
 \begin_inset Formula $1$
 \end_inset
 
- of the corresponding pixelvalue in the mask is greater than 
+ of the corresponding pixel value in the mask is greater than 
 \begin_inset Formula $0$
 \end_inset
 
@@ -445,7 +442,7 @@ This yields a first sample if dataset A.
 \end_layout
 
 \begin_layout Subsubsection
-HSV color space
+Hue-Saturation-Value color space
 \end_layout
 
 \begin_layout Standard
@@ -615,6 +612,16 @@ end{figure}
 \end_inset
 
 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Move to modeling, reference it
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -671,7 +678,7 @@ generic_filter
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,float,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2"
+lstparams "basicstyle={\footnotesize\ttfamily},breaklines=true,caption={Calculate standard deviation},extendedchars=true,float=h,label={calc_std},language=Python,numbers=left,numberstyle={\tiny},showstringspaces=false,tabsize=2"
 inline false
 status open
 
@@ -821,12 +828,12 @@ Support Vector Machines
 
 \begin_layout Standard
 Support vector machines (SVMs) are one of the preferred classification methods
- lately, because tools are widely available and it is one of the best out-of-the
--box methods scientists can use that are not particularly trained in machine
- learning algorithms.
+ lately, because tools are stable and widely available and it is one of
+ the best out-of-the-box methods scientists can use that are not particularly
+ trained in machine learning algorithms.
  They have a high accuracy, but their training time is quite long.
  A model can easily be described by the found support vectors.
- Fig 
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:svm"
@@ -836,7 +843,7 @@ reference "fig:svm"
  shows a basic visualization of an SVM.
  On the left side a line is drawn that seperates both classes.
  This is the decision boundary.
- The right side is not linear separable.
+ The data in the right side is not linear separable.
  A kernel is used to push the data into a higher dimensional space, so that
  the classes are linear seperable in this space.
  
@@ -881,6 +888,13 @@ name "fig:svm"
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
 \end_inset
 
 
@@ -994,7 +1008,7 @@ reference "svm_table"
  shows training an svm takes much more time to be trained than other classifiers.
  This is especially true if a non linear kernel is used, e.g.
  rbf kernel.
- A linear svm is much faster but this goes along with a drop in accuracy.
+ A linear svm is much faster but this results in a drop in accuracy.
  To get both a feasible training time and a good accuracy, a kernel approximatio
 n is used together with a linear SVM.
  A kernel approximation is used before training a SVM (see listing 
@@ -1021,7 +1035,7 @@ key "Rahimi"
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "caption={kernel approximation using scikti learn},float,label={kernel approximation},language=Python"
+lstparams "caption={kernel approximation using scikti learn},float=h,label={kernel approximation},language=Python"
 inline false
 status open
 
@@ -1102,8 +1116,7 @@ There are some other classifiers besides support vector machines.
  Naive Bayes is one of them.
  Due to its simplicity it is quite fast.
  Unfortunately the accuracy score is not good since Naive Bayes assumes
- independency of features which is obiously not the cause for RGB values
- of an image.
+ independency of features which is not the case for RGB values of an image.
  
 \end_layout
 
@@ -1111,7 +1124,7 @@ There are some other classifiers besides support vector machines.
 While KNearestNeighbour considers feature dependencies and therefore has
  a higher accuracy, it's training time is also higher than the one of naive
  bayes.
- Apart from that figure 
+ Apart from that table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "different_classifiers_table"
@@ -1523,7 +1536,7 @@ While scikit-learn already implements a function that performs grid search
 \begin_inset Formula $C$
 \end_inset
 
- and kernel coefficient 
+ and RBF Kernel coefficient 
 \begin_inset Formula $\gamma$
 \end_inset
 
@@ -1866,7 +1879,7 @@ At the beginning the client is set up, so that the engines can be accessed
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Client Setup},float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Client Setup},language=Python,numbers=left"
 inline false
 status open
 
@@ -1912,8 +1925,15 @@ The training data can be sampled.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Generating samples},float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Generating samples},language=Python,numbers=left"
 inline false
 status open
 
@@ -1998,7 +2018,7 @@ partial
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Converting and Adding Features},float=h,language=Python,numbers=left,showstringspaces=false"
+lstparams "breaklines=true,caption={Converting and Adding Features},language=Python,numbers=left,showstringspaces=false"
 inline false
 status open
 
@@ -2121,6 +2141,24 @@ dview.execute(cmd)
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{
+\backslash
+baselineskip}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The data can be combined into training and testing sets.
  The data is shuffled and the sets are class balanced by default.
  The 
@@ -2134,7 +2172,7 @@ combine_files
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Create training and testing sets},float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Create training and testing sets},language=Python,numbers=left"
 inline false
 status open
 
@@ -2200,7 +2238,7 @@ At the end the classifier is trained with parameters optimized with a grid
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Build a SVM classifier},float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Build a SVM classifier},language=Python,numbers=left"
 inline false
 status open
 
@@ -2358,7 +2396,7 @@ predict
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption={Classify test image},float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption={Classify test image},language=Python,numbers=left"
 inline false
 status open
 
@@ -2483,7 +2521,7 @@ This gives a good first impression on the quality of the classifier.
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "breaklines=true,caption=Postprocessing,float=h,language=Python,numbers=left"
+lstparams "breaklines=true,caption=Postprocessing,language=Python,numbers=left"
 inline false
 status open
 

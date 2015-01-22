@@ -170,18 +170,18 @@ key "scikit-learn"
  While python alone may not have the best performance, it is easy to improve
  it by using c or fortran code.
  This is done by most libraries.
- The serial support vector machine algorithms of scikit-learn are based
- on the well known libsvm library 
+ The serial SVM algorithms of scikit-learn are based on the well known libsvm
+ library 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "libsvm"
 
 \end_inset
 
- for example.
- This makes python and the scikit-learn module a good choice for classification
- tasks that play an instrumental part in the application domain problems
- in the internship.
+.
+ The adoption of this stable library makes python and the scikit-learn module
+ a good choice for classification tasks that play an instrumental part in
+ the application domain problems in the internship.
  
 \end_layout
 
@@ -206,8 +206,8 @@ key "mpi"
 \end_inset
 
 .
- The processes do not share any memory and therefore needed data has to
- be communicated over messages.
+ The processes do not share any memory and therefore data has to be communicated
+ over messages.
  This ranges from simple send and recieve functions to more complex ones
  like broadcast or scatter and gather functions.
  The left side of figure 
@@ -217,7 +217,7 @@ reference "mpimap"
 
 \end_inset
 
- shows a visualization of MPI multiprocessing.
+ shows an illustration of MPI multiprocessing.
  The red arrows are the messages that are passed between the processes,
  which are represented by the blue arrows.
 \end_layout
@@ -270,7 +270,8 @@ name "mpimap"
 \end_layout
 
 \begin_layout Standard
-An alternative to MPI based multiprocessing is the map/reduce approach 
+An alternative to MPI based multiprocessing is the more recent map/reduce
+ approach 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hadoop"
@@ -291,6 +292,9 @@ key "hdfs"
  often also include a replication strategy (e.g.
  3 times the same data in HDFS at different sites).
  On each machine the same map job is executed on the local data set.
+ The fundamental idea of Hadoop and HDFS is therefore to 'transfer the job
+ to the data' in contrast to transfer the data to the job resources as typically
+ done by traditionally MPI approaches.
  The results of the map jobs are saved as key value pairs, so that the reducer
  jobs can further evaluate them after a sort/shuffle/group process of keys
  performed by the map-reduce run-time itself.
@@ -374,7 +378,7 @@ ipcluster~start~--profile=pbs~-n~8
 
 \begin_layout Standard
 More information on ipython in general and the setup for parallel usage
- can be found at 
+ can be found in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ipython_doc"

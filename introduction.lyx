@@ -153,6 +153,16 @@ pagenumbering{arabic}
 
 \begin_layout Section
 Introduction
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Acknowledgements
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -167,9 +177,8 @@ The Research Centre Jülich investigates key technologies for the 21st century.
 
 \begin_layout Standard
 The Jülich Super Computing Centre (JSC) provides the resources for these
- computations.
- Such as the supercomputing capacity and capability needed for a fast calculatio
-n.
+ computations such as the supercomputing capacity and capability needed
+ for a fast calculation.
  The JSC has several high performance clusters that can be used for compute-
  and/or data-intensive problems 
 \begin_inset CommandInset citation
@@ -179,7 +188,7 @@ key "jsc"
 \end_inset
 
 .
- Besides hardware the institute investigates, explores and develops different
+ Besides hardware the institute investigates, explores, and develops different
  software solutions for parallel computing.
  
 \end_layout
@@ -195,7 +204,8 @@ Federated Systems and Data
 
  (FSD) of the Jülich Super Computing Centre provides access to distributed
  systems that consist on a wide variety of different resources (e.g.
- HPC system, parallel filesystem environments, HTC resources, or clouds).
+ HPC systems, parallel filesystem environments, high throughput computing
+ resources, or clouds).
  This is done by implementing open standards and simplifying usage and administr
 ation of these services.
  Furthermore the division provides in particular, middleware services, simple
@@ -230,7 +240,8 @@ item{
 \backslash
 textbf{Investigate Generic Data Methods:}} How to overcome limitations of
  processing and analyzing large amounts of data ( e.g.
- in-memory databases, data privacy methods and query processing) 	
+ in-memory databases, data privacy methods and query processing).
+ 	
 \end_layout
 
 \begin_layout Plain Layout
@@ -240,9 +251,9 @@ textbf{Investigate Generic Data Methods:}} How to overcome limitations of
 item{
 \backslash
 textbf{Machine Learning:}} Explore, develop and tune serial or parallel
- machine learning techniques, like classification and clustering, to enable
- solutions that work with large quantities of scientific data or high dimensiona
-l datasets.
+ machine learning techniques, like classification and clustering, in order
+ to enable solutions that work with large quantities of scientific data
+ or high dimensional datasets.
  	
 \end_layout
 
@@ -254,7 +265,8 @@ item{
 \backslash
 textbf{Smart Data Analytics Applications:}} Find and develop solutions that
  are specifically applicable in real-world applications for general data
- analysis and statistical data analysis 
+ analysis and statistical data analysis.
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -274,8 +286,8 @@ During the internship in this group the intention is to analyse, evaluate
  and build classification models for data sets that show problems when working
  with 'big data' .
  As one of the best out-of-the-box solutions preferred by application domain
- scientists, Support Vector Machines are the focused method, but other methods
- are considered as well.
+ scientists, Support Vector Machines (SVMs) are the focused method, but
+ other methods are considered as well.
  This report highlights selected different problems and their solutions
  based on several approaches and implementations by taking advantage of
  the scikit-learn module.
