@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<!--<section data-markdown="example.md"
+        			data-separator="^---"
+        			data-vertical="--"
+        			data-notes="^Note:"
+        			data-charset="utf-8">
+    			</section> -->
+
+    			<section>
+						<img src="graphics/fzjlogo.jpg"
+							style="position:absolute; top:-150px;left:10px; width:30%; border:none;"
+							alt="FZJ Logo"
+							title="FZJ Logo"/>
+						<img src="graphics/umlogo.png"
+							style="position:absolute; top:-150px;left:600px; width:35%;"
+							alt="UM Logo"
+							title="UM Logo"
+						/>
+    				<h2>Classification of a human brain using Support Vector Machines</h2>
+
+						<p>Philipp Glock</p>
+    			</section>
+
+    			<section>
+    			<h3> Human Brain Project </h3>
+    			<ul>
+    				<li>Build 3D model of a human brain</li>
+    				<li>Predict 2d brain parts</li>
+    				<li>Rebuild 3D model</li>
+    			</ul>
+    			</section>
+
+					<section>
+	    			<section>
+	    				<h2> Background </h2>
+						</section>
+						<section>
+							<h3>Cluster System Judge</h3>
+							<ul>
+								<li>GPU cluster (only CPUs used)</li>
+								<li>PBS (portable batch system)</li>
+								<li>MPI,IPython</li>
+							</ul>
+						</section>
+						<section>
+							<h2>Python</h2>
+							<ul>
+								<li>Numpy</li>
+								<li>Scikit-learn</li>
+								<li>Scikit-Image</li>
+							</ul>
+						</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Data Preprocessing</h2></section>
+						<section>
+    					<h3>From images to libsvm</h3>
+    						<ul>
+    							<li>find error in conversion script and fix it</li>
+    							<li>simple parallelisation</li>
+    						</ul>
+						</section>
+						<section>
+    					<h3>Sampling</h3>
+    					<ul>
+    						<li>Random sampling all images</li>
+    						<li>Rescaling uniformly distributed images</li>
+    					</ul>
+						</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Feature Extraction</h2></section>
+    				<section>
+    					<h3>Different Color Space</h3>
+    					<ul>
+    						<li>HSV color space</li>
+    						<li>often used for object recognition</li>
+    						<li>easy to parallelise</li>
+    					</ul>
+    				</section>
+    				<section>
+    					<h3>Local Features</h3>
+    					<ul>
+    						<li>sliding window</li>
+    						<li>local standard deviation</li>
+    					</ul>
+    				</section>
+    				<section>
+    					<h3>Image Segmentation</h3>
+    					<ul>
+    						<li>Watershed Segmentation</li>
+    					</ul>
+    				</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Data Modeling</h2></section>
+    				<section>
+    					<h3>Different Models</h3>
+    					<ul>
+    						<li>Focused SVM
+    							<ul>
+    								<li>Grid search, no scaling</li>
+    								<li>more robust</li>
+    							</ul>
+    						</li>
+    						<li>Random Forest</li>
+    						<li>KNN
+    							<ul><li>no scaling</li></ul>
+    						</li>
+    					</ul>
+    				</section>
+    			</section>
+
+    			<section>
+    				<section><h2>SVM advanced</h2></section>
+    				<section>
+    					<h3>Kernel Approximation</h3>
+    					<ul>
+    						<li>Random Features using Monte Carlo Approximation
+    							<ul><li>Data independent</li></ul>
+    						</li>
+    						<li>Nystroem Method
+    							<ul>
+    								<li>Data dependent</li>
+    								<li>often better approximation</li>
+    							</ul>
+    							</li>
+    					</ul>
+    				</section>
+    				<section>
+    					<h3>Multiple Models</h3>
+    					<ul>
+    						<li>Improves accuracy</li>
+    						<li>Possible overfitting</li>
+    						<li>Data has to be consistent</li>
+    					</ul>
+    				</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Deployment</h2></section>
+    				<section>
+    					<h3>IPython Notebook</h3>
+    					<ul>
+    						<li>Browser based</li>
+    						<li>Additional functions/magics, e.g. %timeit</li>
+    						<li>Code, documentation and results displayed</li>
+    						<li>Parallel thanks to ipcluster, PBS compatbile</li>
+    						<li>Easy to extend/modify</li>
+    					</ul>
+    				</section>
+    				<section>
+    					<h3>Postprocessing</h3>
+    					Visualize Accuracy
+    				</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Twister</h2></section>
+    				<section>
+    					<ul>
+    						<li>Iterative map/reduce</li>
+    						<li>SVM implementation based on libsvm</li>
+    						<li>Development version</li>
+    						<li>unstable</li>
+    						<li>Communication overhead</li>
+    						<li>Slower than scikit-learn for small to medium data sets</li>
+    					</ul>
+    				</section>
+    			</section>
+
+    			<section>
+    				<section><h2>Conclusion</h2></section>
+
+    			</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
