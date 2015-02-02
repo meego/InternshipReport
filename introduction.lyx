@@ -151,18 +151,18 @@ pagenumbering{arabic}
 
 \end_layout
 
-\begin_layout Section
-Introduction
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Acknowledgements
+\begin_layout Section*
+Acknowledgments
 \end_layout
 
-\end_inset
+\begin_layout Standard
+I would like to thank the JSC for its support during my internship.
+ A special thanks goes to Markus Axer and Stefan Köhnen for providing the
+ brain data used in this internship.
+\end_layout
 
-
+\begin_layout Section
+Introduction
 \end_layout
 
 \begin_layout Standard

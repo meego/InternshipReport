@@ -184,7 +184,7 @@
   Url                      = {http://dx.doi.org/10.1109/MSST.2010.5496972}
 }
 
-@InProceedings{sun2012study,
+@InProceedings{twistersvm,
   Title                    = {Study on parallel SVM based on MapReduce},
   Author                   = {Sun, Zhanquan and Fox, Geoffrey},
   Booktitle                = {International Conference on Parallel and Distributed Processing Techniques and Applications},
@@ -241,7 +241,7 @@
 
 @Misc{ipython_doc,
   HowPublished             = {\url{http://ipython.org/documentation.html}},
-  Note                     = {[PLACEHOLDEROnline; accessed 20-January-2015]},
+  Note                     = {[Online; accessed 20-January-2015]},
 
   Owner                    = {p.glock},
   Timestamp                = {2014.10.06}

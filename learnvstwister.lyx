@@ -136,7 +136,7 @@ tabs-within-sections
 \begin_body
 
 \begin_layout Section
-Evaluations
+Evaluation On Dataset A And C
 \end_layout
 
 \begin_layout Subsection
@@ -144,7 +144,7 @@ Comparison between Scikit-Learn and Twister SVM
 \end_layout
 
 \begin_layout Standard
-Both scikit-learn and the twister SVM 
+Both scikit-learn and the Twister SVM 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "twistersvm"
@@ -197,8 +197,8 @@ reference "svm_table"
  sets, because the twister implementations is still quite unstable due to
  its many dependencies on a map/reduce runtime, a messaging system for the
  iterative map/reduce technique and an on-top implementation of SVMs that
- was never released as an official software package and is also rather a
- matter of an ongoing research project.
+ was never released as an official software package.
+ Hence, it is also rather a matter of an ongoing research project.
  
 \end_layout
 
@@ -265,7 +265,7 @@ test time in s
 \begin_inset Text
 
 \begin_layout Plain Layout
-sklearn, 20k instances
+scikit-learn, 20k instances
 \end_layout
 
 \end_inset
@@ -312,7 +312,7 @@ sklearn, 20k instances
 \begin_inset Text
 
 \begin_layout Plain Layout
-sklearn, 40k instances
+scikit-learn, 40k instances
 \end_layout
 
 \end_inset
@@ -359,7 +359,7 @@ sklearn, 40k instances
 \begin_inset Text
 
 \begin_layout Plain Layout
-sklearn, 100k instances
+scikit-learn, 100k instances
 \end_layout
 
 \end_inset
@@ -569,7 +569,8 @@ reference "fig:sklearn_runtime"
 
 \end_inset
 
- shows the accuracy and training time with an increasing data set.
+ shows the accuracy and training time with an increasing number of samples
+ of dataset A.
  The improvement of accuracy is low compared to the additional runtime that
  is needed.
  Additional samples do not improve the accuracy much.
@@ -640,11 +641,11 @@ reference "tab:setC"
 \end_inset
 
  sample.
- Because of the additional features compared to set A and a larger sample
+ Because of the additional features compared to dataset A and a larger sample
  the accuracy has increased.
  The performance dropped because of the larger training set.
  The effect of the new features can be seen best on the SVM, because the
- model built on set C as well as the one built on set A use 
+ model built on dataset C as well as the one built on set A use 
 \begin_inset Formula $20000$
 \end_inset
 

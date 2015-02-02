@@ -561,69 +561,6 @@ Kommentar muss in Evaluation
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{figure} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-includegraphics[width=0.7
-\backslash
-linewidth]{graphics/predict200_svm_rbf} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-caption{predicted image using svm with rbf kernel} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-label{fig:predict200_svm_rbf} 
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{figure}
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Move to modeling, reference it
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Local Features
 \end_layout
@@ -894,13 +831,6 @@ name "fig:svm"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 A kernel defines the used scalar product.
  The most popular kernels are the following:
 \end_layout
@@ -971,6 +901,55 @@ Unlike other classification methods (e.g.
  However depending on the chosen kernel cross-validation runs are necessary
  to determine the parameter for the kernels (e.g.
  rbf works with parameter gamma).
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:predict200_svm_rbf"
+
+\end_inset
+
+ shows the predicted labels with a SVM on dataset A and with a RBF kernel.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphics/predict200_svm_rbf.png
+	width 70line%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+predicted image using svm with rbf kernel
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:predict200_svm_rbf"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1829,7 +1808,8 @@ Deployment
 \end_layout
 
 \begin_layout Standard
-In this section the deployment is described as a so called IPython notebook.
+In this section the deployment is described as a so called IPython notebook
+ as introduced in Section 2.
  It contains the complete workflow from data preprocessing to model evaluation
  as well as some explanations and comments.
  This allows a scientist to easily change and use the functions he needs.
@@ -1873,8 +1853,8 @@ This notebook shows the different steps that are needed to classify the
 \end_layout
 
 \begin_layout Standard
-At the beginning the client is set up, so that the engines can be accessed
- and used.
+At the beginning the client is set up, so that the engines ( processes )
+ can be accessed and used.
 \end_layout
 
 \begin_layout Standard
@@ -2159,7 +2139,7 @@ baselineskip}
 \end_layout
 
 \begin_layout Standard
-The data can be combined into training and testing sets.
+The data from set C can be combined into training and testing sets.
  The data is shuffled and the sets are class balanced by default.
  The 
 \emph on
@@ -2391,7 +2371,15 @@ If the classifier is not trained in the current session, it can be loaded
 predict
 \emph default
  method of the classifier.
- The predicted labels can be reshaped, so that the new mask can be printed.
+ The predicted labels can be reshaped, so that the new mask can be printed
+ as seen in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:predicted_mask"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -2479,6 +2467,13 @@ status open
 
 \begin_layout Plain Layout
 predicted mask
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:predicted_mask"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
